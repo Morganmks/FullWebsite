@@ -10,3 +10,6 @@ _originals-fighters/
 
 # Full-res avatar masters — processed copies live alongside them.
 assets/guides/_masters/
+
+# Unused leftover — no code references it.
+assets/hero/hero-bg-loop.mp4

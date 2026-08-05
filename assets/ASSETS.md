@@ -117,40 +117,49 @@ original. Don't pre-darken or pre-texture the file; the page will over-darken it
 
 ## Hero video
 
-Plays behind the menu from the moment someone presses start. **Currently shipped:**
+Plays behind the menu from the moment someone presses start, and behind the
+quiz's menu too — both pages share these files. **Currently shipped:**
 
 | File | Size | Resolution | Length |
 |---|---|---|---|
-| `hero.mp4` | 13 MB | 1280×720 | 15s |
-| `hero-mobile.mp4` | 4.5 MB | 640×360 | 15s |
+| `hero.mp4` | 8.8 MB | 1280×720 | 29.4s (full) |
+| `hero-mobile.mp4` | 3.4 MB | 640×360 | 29.4s (full) |
 
 Both carry their AAC audio track — **this is the only soundtrack**. The speaker
-toggle unmutes it. The Press to Start screen is a still, so there is deliberately
-no audio there beyond the click; sound begins when the menu video does.
+toggle unmutes it. The Press to Start screen is a still, so there is
+deliberately no audio there beyond the click; sound begins when the menu video
+does. Both are encoded with faststart, so playback can begin before the file
+has finished downloading.
 
-**Keep every file in this repo under 25 MB.** GitHub refuses any file over 100 MB
-outright and its web uploader stops at 25 MB, so a single oversized file blocks
-the entire push — which is exactly what a 121 MB source did once already. Master
-files live outside the project, in `~/Documents/Claude/longuard-video-sources/`.
+**Keep every file in this repo under 25 MB.** GitHub refuses any file over
+100 MB outright and its web uploader stops at 25 MB. The master lives outside
+the project, in `~/Documents/Claude/longuard-video-sources/sm.quiz.hero.mp4`
+(3840×2160, 29.4s, 121 MB).
 
-### Re-encoding from a master
+### Re-encoding from the master
 
-`avconvert` ships with macOS and needs no install. Its presets are fixed-quality
-with no bitrate control, so **length is the lever, not compression** — trimming
-keeps every frame at full quality, where dropping the bitrate would not.
+**Use bitrate, not length.** An earlier pass trimmed the video to 15s with
+`avconvert --duration 15` to hit a size target, which silently threw away half
+the footage — avconvert's presets are fixed-quality with no rate control, so
+length was the only lever it offered. It is the wrong lever.
+
+`tools/encode.swift` (AVFoundation) does the same job with real bitrate
+control, no install required:
 
 ```
-cd ~/Documents/Claude/longuard-video-sources
-avconvert -s sm.quiz.hero.mp4 -p Preset1280x720 --duration 15 -o hero.mp4 --replace
-avconvert -s sm.quiz.hero.mp4 -p Preset640x480  --duration 15 -o hero-mobile.mp4 --replace
+swift encode.swift <in> <out.mp4> <width> <height> <videoKbps> <audioKbps>
+
+swift encode.swift sm.quiz.hero.mp4 hero.mp4        1280 720 2400 96
+swift encode.swift sm.quiz.hero.mp4 hero-mobile.mp4  640 360  900 64
 ```
 
-Roughly 0.9 MB per second at 720p and 0.3 MB per second at 360p, so a 20-second
-desktop cut lands near 18 MB. Other presets, measured on this footage at 15s:
-`Preset960x540` 8.8 MB, `PresetAppleM4VWiFi` 1.2 MB but only 480×272.
+That produced the full 29.4s at 8.8 MB — *smaller* than the 15-second cut it
+replaced, which was 13.3 MB. If you need it lighter still, drop the video kbps
+before you ever consider shortening it: 1800 kbps lands near 6.6 MB, 1400 near
+5.2 MB. Only trim length if the footage itself has dead air.
 
-If you install HandBrake you get real bitrate control and can hold 720p for the
-full 29 seconds at around 5 MB — RF 26, web-optimised, audio at 96 kbps.
+If you'd rather use standard tooling, `brew install ffmpeg` gives you the same
+control with `-crf 26 -movflags +faststart`.
 
 ### Shooting for it
 
