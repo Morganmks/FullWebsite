@@ -1,0 +1,7 @@
+{
+  "name": "longuard-fighter-quiz",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "What Kind of Fighter Are You? — Longuard lead-gen quiz with MailerLite integration"
+}

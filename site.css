@@ -1,0 +1,1175 @@
+/* ==========================================================================
+   LONGUARD GYM — shared site styles
+   Tokens are lifted from the quiz's style.css so the two read as one place.
+   The quiz keeps its own stylesheet; this one dresses everything around it.
+   ========================================================================== */
+
+:root {
+  --void: #000;
+  --bone: #F2EBD8;
+  --bone-soft: rgba(242, 235, 216, 0.86);
+  --bone-mid: rgba(242, 235, 216, 0.62);
+  --bone-dim: rgba(242, 235, 216, 0.42);
+  --line: rgba(242, 235, 216, 0.18);
+
+  --slasher: #C1272D;
+  --stoic: #FFFFFF;
+  --joker: #D4AF37;
+  --sleeper: #4A90D9;
+  --cornerwoman: #E0723A;
+
+  --accent: var(--slasher);
+
+  --ui: 'Archivo', system-ui, sans-serif;
+  --body: 'IBM Plex Sans', system-ui, sans-serif;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --gutter: 22px;
+  --nav-h: 58px;
+  --max: 1180px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--bone);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ===== Nav ============================================================== */
+
+#site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(0, 0, 0, 0.86);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  height: var(--nav-h);
+  padding: 0 var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-mark {
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+  text-decoration: none;
+}
+.nav-mark img {
+  height: 20px;
+  width: auto;
+  display: block;
+}
+
+.nav-links { display: flex; gap: 4px; }
+
+.nav-link {
+  font-family: var(--ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--bone-mid);
+  text-decoration: none;
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.nav-link:hover { color: var(--bone); border-color: var(--line); }
+.nav-link.is-here { color: var(--bone); border-color: var(--bone-dim); }
+
+.nav-toggle { display: none; }
+
+@media (max-width: 860px) {
+  .nav-toggle {
+    display: block;
+    width: 40px; height: 40px;
+    background: none;
+    border: 1px solid var(--line);
+    cursor: pointer;
+    position: relative;
+  }
+  .nav-toggle span[aria-hidden] {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(var(--bone), var(--bone)) center 13px / 18px 1.5px no-repeat,
+      linear-gradient(var(--bone), var(--bone)) center 19px / 18px 1.5px no-repeat,
+      linear-gradient(var(--bone), var(--bone)) center 25px / 18px 1.5px no-repeat;
+  }
+  .nav-links {
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    flex-direction: column;
+    gap: 0;
+    background: #000;
+    border-bottom: 1px solid var(--line);
+    display: none;
+  }
+  #site-nav.is-open .nav-links { display: flex; }
+  .nav-link { padding: 15px var(--gutter); border: 0; border-top: 1px solid var(--line); }
+}
+
+/* ===== Page furniture =================================================== */
+
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.page-head {
+  padding: clamp(38px, 7vw, 76px) 0 clamp(26px, 4vw, 44px);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(30px, 5vw, 54px);
+}
+
+.kicker {
+  font-family: var(--ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+
+h1.page-title {
+  font-family: var(--ui);
+  font-weight: 800;
+  font-size: clamp(34px, 7vw, 62px);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.lede {
+  color: var(--bone-mid);
+  max-width: 56ch;
+  margin-top: 18px;
+  font-size: clamp(15px, 2vw, 18px);
+}
+
+h2.section-title {
+  font-family: var(--ui);
+  font-weight: 700;
+  font-size: clamp(20px, 3vw, 27px);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.section-note { color: var(--bone-dim); font-size: 14px; margin-bottom: 26px; }
+
+.block { margin-bottom: clamp(46px, 8vw, 86px); }
+
+.btn {
+  display: inline-block;
+  font-family: var(--ui);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--bone);
+  background: none;
+  border: 1px solid var(--bone-dim);
+  padding: 14px 26px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.btn:hover { border-color: var(--bone); background: rgba(242, 235, 216, 0.08); }
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #000;
+}
+.btn-primary:hover { background: var(--bone); border-color: var(--bone); color: #000; }
+
+.site-foot {
+  border-top: 1px solid var(--line);
+  margin-top: clamp(50px, 9vw, 100px);
+  padding: 30px 0 46px;
+  color: var(--bone-dim);
+  font-size: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  justify-content: space-between;
+}
+
+/* Placeholder markers. Every stand-in on the site carries one so nothing
+   half-built can be mistaken for finished. */
+.stub {
+  display: inline-block;
+  font-family: var(--ui);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+  border: 1px solid var(--line);
+  padding: 4px 8px;
+}
+
+/* ===== HOME: full-bleed stages =========================================
+   The home page is three stages on one screen — attract, menu, gym — and the
+   backdrop is the whole viewport, never a box. `body.stage-*` selects.
+   ====================================================================== */
+
+body.home { overflow-x: hidden; }
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+/* --- hero: attract + menu --- */
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.9s var(--ease-soft);
+}
+
+/* No more static still — the video is requested immediately on load and
+   fades in the moment it has a frame, live behind Press to Start too. */
+body.hero-video-ready .hero-video { opacity: 1; }
+
+/* --- gym: the illustrated floor --- */
+
+.scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-soft);
+  pointer-events: none;
+}
+body.stage-gym .scene { opacity: 1; pointer-events: auto; }
+
+/* The plate carries the art's own 16:9 and is grown until it covers the
+   viewport, then centred — so it crops like `background-size: cover` while
+   staying a real box that percentage-positioned hotspots can sit inside. That
+   is the whole trick: the guides move with the art, not with the window. */
+.scene-plate {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max(100%, calc(100dvh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  background-color: #0B0B0D;
+  background-image: var(--scene-img);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Before the art lands, something has to mark the room. */
+.scene:not(.has-art) .scene-plate {
+  background-image:
+    radial-gradient(80% 60% at 50% 12%, rgba(193, 39, 45, 0.10), transparent 70%),
+    linear-gradient(to bottom, #131317 0%, #0A0A0C 58%, #050506 100%);
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 0.8s var(--ease-soft);
+  background:
+    linear-gradient(to right, rgba(0, 0, 0, 0.86) 0%, rgba(0, 0, 0, 0.45) 34%, transparent 62%),
+    linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 42%);
+}
+/* On the gym floor the room is the content, so the scrim mostly gets out of
+   the way — just enough left to keep the nav legible. */
+body.stage-gym .scrim {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, transparent 18%);
+}
+
+/* --- stages --- */
+
+/* The stages sit above the backdrop, and each one fills the viewport — which
+   would mean the gym stage silently swallowing every click meant for a guide
+   standing in the backdrop below it. So the stage layer is transparent to the
+   pointer and only the things you're actually meant to hit opt back in. */
+.stages { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
+/* Only .guide-cards needs its own explicit override — #stage-gym stays
+   pass-through even when active (see below), so this is what makes the
+   mobile card list clickable. #stage-attract and .home-menu are handled by
+   the stage-conditional rule further down / by inheriting from #stage-menu;
+   giving them an unconditional pointer-events:auto here would let an
+   inactive-but-still-mounted stage silently catch clicks meant for whatever
+   stage actually is active — which is exactly the bug that broke the guides
+   the last round. */
+.guide-cards { pointer-events: auto; }
+
+/* All three stages stay mounted and just cross-fade — swapping via
+   display:none cut instantly with no way to tween it, which read as a hard
+   jump. Each stage sits full-bleed (inset:0) and only the active one is
+   opaque and clickable. */
+.stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.6s var(--ease-soft), transform 0.6s var(--ease-soft);
+}
+body.stage-attract #stage-attract,
+body.stage-menu #stage-menu,
+body.stage-gym #stage-gym {
+  opacity: 1;
+  transform: none;
+}
+/* Only these two get pointer-events on the container itself — #stage-gym's
+   content (mobile-only .guide-cards) already opts in on its own, and the
+   container staying pass-through is what lets clicks reach the guide
+   hotspots living in .backdrop .scene underneath it. */
+body.stage-attract #stage-attract,
+body.stage-menu #stage-menu {
+  pointer-events: auto;
+}
+
+#stage-attract,
+#stage-menu {
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 clamp(24px, 6vw, 88px);
+}
+
+#stage-attract {
+  align-items: center;
+  text-align: center;
+}
+
+.attract-logo {
+  width: clamp(240px, 34vw, 420px);
+  height: auto;
+  margin-bottom: 26px;
+}
+
+/* Letterbox bars — same move as the quiz's title card. Only shown on the
+   attract beat; the menu and gym stages don't want the frame. */
+.bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 6;
+  background: #000;
+  height: clamp(34px, 6vh, 62px);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.5s var(--ease-soft);
+}
+.bar-top { top: 0; }
+.bar-bottom {
+  bottom: 0;
+  height: clamp(44px, 7vh, 72px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+body:not(.stage-attract) .bar { opacity: 0; }
+
+.legal {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 5vw, 40px);
+  font-family: var(--ui);
+  font-size: clamp(8.5px, 2.2vw, 10px);
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(242, 235, 216, 0.34);
+  white-space: nowrap;
+}
+/* a hairline between the two marks rather than a bullet */
+.legal span + span::before {
+  content: "";
+  display: inline-block;
+  width: clamp(14px, 5vw, 40px);
+  height: 1px;
+  background: rgba(242, 235, 216, 0.2);
+  vertical-align: middle;
+  margin-right: clamp(14px, 5vw, 40px);
+}
+
+#stage-gym {
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+}
+
+/* Was tucked under the nav at the top, in dim text over the busy roof
+   structure — the two worst things you can do to a hint. It now sits on the
+   empty foreground floor at the bottom, which is the one reliably quiet part
+   of the scene, and carries its own soft backing so it stays readable
+   whatever the art behind it does. */
+.gym-hint {
+  /* fixed, not absolute: #stage-gym collapses to zero height on desktop (the
+     scene behind it is the content), so a bottom-anchored absolute child ends
+     up above the viewport entirely. */
+  position: fixed;
+  z-index: 5;
+  bottom: clamp(28px, 6vh, 60px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--ui);
+  font-size: clamp(12px, 1.15vw, 15px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--bone);
+  text-align: center;
+  pointer-events: none;
+  max-width: min(90vw, 640px);
+  padding: 11px 22px;
+  border: 1px solid rgba(242, 235, 216, 0.16);
+  border-radius: 999px;
+  background: rgba(8, 8, 10, 0.72);
+  backdrop-filter: blur(8px);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.9);
+}
+@media (max-width: 759px) {
+  .gym-hint { display: none; }
+}
+
+/* Shimmer sweeps across the hint text — a soft attention cue, not a
+   flashing one. Same reduced-motion opt-out as the press-start blink. */
+/* The old shimmer clipped a gradient to the text, which needed the element's
+   background free — the pill now uses it. The cue moved to the pill's edge
+   instead: same "look here" pulse, and the text stays solid and readable. */
+.gym-hint.is-shimmer {
+  animation: hint-pulse 2.8s var(--ease-soft) infinite;
+}
+@keyframes hint-pulse {
+  0%, 100% { border-color: rgba(242, 235, 216, 0.16); box-shadow: 0 0 0 0 rgba(242, 235, 216, 0); }
+  50%      { border-color: rgba(242, 235, 216, 0.42); box-shadow: 0 0 22px 0 rgba(242, 235, 216, 0.10); }
+}
+
+/* The guide the tutorial currently wants clicked gets a soft pulsing glow
+   in its own accent colour, on top of the normal hover/tag treatment. */
+.guide.is-hint-target .guide-art {
+  animation: guide-hint-glow 1.8s ease-in-out infinite;
+}
+@keyframes guide-hint-glow {
+  0%, 100% { filter: drop-shadow(0 0 4px var(--accent)) brightness(1); }
+  50%      { filter: drop-shadow(0 0 26px var(--accent)) brightness(1.3); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gym-hint.is-shimmer,
+  .guide.is-hint-target .guide-art { animation: none; }
+}
+
+#stage-attract { cursor: pointer; }
+
+/* Bottom-left, smaller — overrides the shared centered/left-start rule above
+   for this stage only. */
+#stage-menu {
+  justify-content: flex-end;
+  padding-bottom: clamp(32px, 6vh, 72px);
+}
+
+.home-kicker {
+  font-family: var(--ui);
+  font-size: clamp(10px, 1.1vw, 12px);
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--bone-mid);
+  margin-bottom: 18px;
+}
+
+/* Sits where the "LONGUARD" kicker used to. Same wordmark file the attract
+   screen uses, so the logo is one asset everywhere it appears. Smaller than
+   the attract lockup — here it's a label above the menu, not the title card. */
+.menu-logo {
+  width: clamp(116px, 13vw, 178px);
+  height: auto;
+  margin-bottom: clamp(14px, 2vh, 22px);
+  opacity: 0.92;
+}
+
+.press-start {
+  font-family: var(--ui);
+  font-size: clamp(13px, 1.5vw, 16px);
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--bone);
+  animation: blink 2.4s var(--ease-soft) infinite;
+}
+@keyframes blink { 0%, 45% { opacity: 1; } 65%, 85% { opacity: 0.25; } 100% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .press-start { animation: none; }
+  #stage-attract, #stage-menu { animation: none; }
+}
+
+/* --- the main menu, left-aligned over the video --- */
+
+.home-menu { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+
+.home-menu-item {
+  display: block;
+  background: none;
+  border: 0;
+  padding: 6px 0;
+  font-family: var(--ui);
+  font-size: clamp(13px, 1.6vw, 19px);
+  font-weight: 800;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  color: var(--bone-mid);
+  text-decoration: none;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.2s var(--ease);
+}
+.home-menu-item span { position: relative; display: inline-block; }
+/* the marker slides in from the left rather than nudging the whole row */
+.home-menu-item span::before {
+  content: "";
+  position: absolute;
+  left: -0.7em;
+  top: 50%;
+  width: 0.34em;
+  height: 2px;
+  background: var(--slasher);
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: left;
+  transition: transform 0.22s var(--ease);
+}
+.home-menu-item:hover,
+.home-menu-item:focus-visible { color: var(--bone); outline: none; }
+.home-menu-item:hover span::before,
+.home-menu-item:focus-visible span::before { transform: translateY(-50%) scaleX(1); }
+
+/* The attract beat is a title card — no chrome on it at all. */
+body.stage-attract #site-nav { opacity: 0; pointer-events: none; }
+body.home #site-nav {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), transparent);
+  backdrop-filter: none;
+  border-bottom: 0;
+  transition: opacity 0.5s var(--ease-soft);
+}
+
+/* --- a guide hotspot ---
+   Anchored by its FEET at (--x, --y): translate(-50%, -100%) puts the bottom
+   centre of the figure exactly on that point. */
+.guide {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  height: var(--h);
+  /* Height is the size lever; the width follows whatever the art's own aspect
+     ratio is, so a wider or narrower character file needs no config change. */
+  width: auto;
+  transform: translate(-50%, -100%);
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.28s var(--ease), filter 0.28s var(--ease);
+}
+.guide:hover, .guide:focus-visible {
+  transform: translate(-50%, -100%) scale(1.045);
+  outline: none;
+}
+/* The clicked figure pops slightly before the overlay's larger version fades
+   in — the two together sell "stepped forward" instead of just "a window
+   appeared." Set by mountOverlay() in site.js on click. */
+.guide.is-active {
+  transform: translate(-50%, -100%) scale(1.1);
+  filter: brightness(1.2);
+  z-index: 5;
+  transition: transform 0.35s var(--ease), filter 0.35s var(--ease);
+}
+
+.guide-art { display: block; height: 100%; }
+.guide-art svg { height: 100%; width: auto; fill: #000; display: block; }
+.guide-art img { height: 100%; width: auto; }
+
+/* Placeholder silhouettes are pure black on a dark scene, so they need an edge
+   to read as a shape at all. Real art drops the outline. */
+.guide:not(.has-art) .guide-art svg {
+  filter: drop-shadow(0 0 0 rgba(242, 235, 216, 0.55))
+          drop-shadow(0 0 1px rgba(242, 235, 216, 0.55))
+          drop-shadow(0 0 6px rgba(0, 0, 0, 0.9));
+}
+.guide:hover .guide-art svg,
+.guide:focus-visible .guide-art svg { fill: #0A0A0A; }
+
+/* Some source portraits are cropped mid-thigh, so dropped straight onto the
+   floor they end in a hard horizontal cut. A short mask dissolves that edge.
+   Set by the `fade` flag in GUIDES — full-body art doesn't want it. */
+.guide.fade-bottom .guide-art {
+  -webkit-mask-image: linear-gradient(to bottom, #000 76%, transparent 99%);
+  mask-image: linear-gradient(to bottom, #000 76%, transparent 99%);
+}
+
+/* The label sits above the head, not below the feet: a foreground character
+   stands near the bottom edge of the scene, and the scene clips its overflow,
+   so anything under their feet gets cut off. */
+.guide-tag {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.22s var(--ease);
+  pointer-events: none;
+}
+.guide:hover .guide-tag,
+.guide:focus-visible .guide-tag { opacity: 1; }
+
+.guide-tag-name {
+  display: block;
+  font-family: var(--ui);
+  font-size: clamp(11px, 1.1vw, 15px);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-shadow: 0 2px 10px #000;
+}
+.guide-tag-section {
+  display: block;
+  font-size: clamp(9px, 0.85vw, 11px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bone-mid);
+  text-shadow: 0 2px 10px #000;
+}
+
+/* --- when the room can't be shown: cards instead of hotspots ---
+   Filling the viewport with a 16:9 illustration means cropping it whenever the
+   window isn't 16:9, and the crop comes off the sides — where the two
+   foreground guides stand. The visible fraction of the art is
+   `aspect / 1.778`, so by roughly 1.4:1 the guides at x=12% and x=82% are at
+   the edge of being reachable. Past that, and on phones, the gym stage falls
+   back to the same five guides as a list rather than showing a room you can't
+   use. Both thresholds are just these two queries. */
+.guide-cards { display: none; }
+
+@media (max-width: 760px), (max-aspect-ratio: 7 / 5) {
+  body.stage-gym .scene { display: none; }
+  body.stage-gym .backdrop { background: #08080A; }
+  .guide-cards {
+    display: grid;
+    gap: 10px;
+    width: 100%;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 90px var(--gutter) 40px;
+  }
+  #stage-gym { justify-content: flex-start; }
+}
+
+.guide-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--bone);
+  background: rgba(242, 235, 216, 0.02);
+}
+.guide-card:active { background: rgba(242, 235, 216, 0.07); }
+
+.guide-card-fig {
+  flex: 0 0 34px;
+  height: 62px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.guide-card-fig svg { width: 100%; height: 100%; fill: var(--accent); }
+.guide-card-fig img { max-height: 100%; width: auto; }
+
+.guide-card-name {
+  display: block;
+  font-family: var(--ui);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.guide-card-section {
+  display: block;
+  font-family: var(--ui);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.guide-card-blurb { display: block; color: var(--bone-dim); font-size: 13px; margin-top: 3px; }
+
+/* ===== Tune mode ======================================================== */
+
+body.tuning .guide {
+  outline: 1px dashed rgba(242, 235, 216, 0.5);
+  touch-action: none;
+}
+body.tuning .guide.is-selected { outline: 1px solid var(--slasher); }
+body.tuning .guide-tag { opacity: 1; }
+body.tuning .scene { cursor: grab; }
+
+.tuner {
+  position: fixed;
+  right: 16px; bottom: 16px;
+  z-index: 60;
+  width: min(340px, calc(100vw - 32px));
+  max-height: 70vh;
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.94);
+  border: 1px solid var(--line);
+  padding: 14px 16px;
+  font-size: 12px;
+}
+.tuner-head {
+  font-family: var(--ui);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 11px;
+  cursor: grab;
+  touch-action: none;
+  /* the drag handle, so it needs to look like one */
+  margin: -14px -16px 0;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.tuner-head:active { cursor: grabbing; }
+.tuner-hint { color: var(--bone-dim); margin: 6px 0 10px; line-height: 1.45; }
+.tuner-out {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--bone-soft);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* ===== Audio ============================================================
+   Same control as the quiz: a speaker toggle plus a volume dial that drops
+   out of it on hover/interaction and retires a few seconds later. Ties to
+   the hero video's own audio track, top right, below the nav/bar height. */
+
+.audio-ctl {
+  position: fixed;
+  top: calc(var(--nav-h) + 14px);
+  right: var(--gutter);
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.audio-btn {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--line);
+  color: var(--bone-mid);
+  cursor: pointer;
+  transition: color 0.3s var(--ease-soft), border-color 0.3s var(--ease-soft), background 0.3s var(--ease-soft);
+}
+.audio-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }
+.audio-btn .spk { fill: currentColor; stroke: none; }
+.audio-btn .waves { opacity: 0; transition: opacity 0.3s var(--ease-soft); }
+.audio-btn .cross { opacity: 1; transition: opacity 0.3s var(--ease-soft); }
+
+body.audio-on .audio-btn { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+body.audio-on .audio-btn .waves { opacity: 1; }
+body.audio-on .audio-btn .cross { opacity: 0; }
+
+.audio-dial {
+  position: relative;
+  width: 22px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease-soft), transform 0.4s var(--ease);
+}
+.audio-ctl.open .audio-dial { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+.audio-ticks {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 11px;
+  height: 100%;
+  color: rgba(242, 235, 216, 0.34);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    currentColor 0 1px,
+    transparent 1px calc((100% - 1px) / 4));
+}
+
+.audio-range {
+  position: relative;
+  width: 22px;
+  height: 92px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  margin: 0;
+  cursor: pointer;
+}
+.audio-range::-webkit-slider-runnable-track {
+  width: 2px;
+  height: 100%;
+  background: rgba(242, 235, 216, 0.22);
+  margin-left: 14px;
+}
+.audio-range::-moz-range-track {
+  width: 2px;
+  height: 100%;
+  background: rgba(242, 235, 216, 0.22);
+  margin-left: 14px;
+}
+.audio-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 13px;
+  height: 5px;
+  background: var(--accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 70%, transparent);
+  cursor: pointer;
+}
+.audio-range::-moz-range-thumb {
+  width: 13px;
+  height: 5px;
+  border: 0;
+  background: var(--accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 70%, transparent);
+  cursor: pointer;
+}
+
+/* ===== Guide overlay: click a figure -> fullscreen avatar + popup =========
+   Same idea as clicking a guide in the Hound reference: the scene stays put
+   and dims, the clicked figure renders large, and a panel with that section's
+   real content (fetched, not a page load) sits beside them.                */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+}
+/* display and "open" are deliberately two different classes. If display:none
+   -> block and opacity:0 -> 1 land in the same style recalculation, the
+   browser never paints the closed state and the transition has nothing to
+   animate from — it just snaps straight to visible. is-mounted flips display
+   only; is-open (added a frame later, in JS) is what actually triggers the
+   avatar/panel/scrim transitions below. */
+.overlay.is-mounted { display: block; }
+
+.overlay-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 5, 6, 0.84);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-soft);
+}
+.overlay.is-open .overlay-scrim { opacity: 1; }
+
+/* Avatar and panel are a flex ROW, not an absolutely-positioned figure with a
+   panel floated near it. The old way needed magic numbers to keep a wide
+   avatar (Sleeper is nearly square) from sliding under the panel; as a row
+   they simply can't overlap at any width. side-right reverses the row, which
+   is the whole of the left/right mirroring. */
+.overlay-stage {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;                 /* vertically centred, both sides */
+  justify-content: flex-start;
+  gap: clamp(16px, 3vw, 56px);
+  padding: 0 clamp(16px, 3.5vw, 72px);
+}
+.overlay.side-right .overlay-stage { flex-direction: row-reverse; }
+
+.overlay-avatar {
+  flex: 0 0 auto;
+  height: 78%;
+  width: auto;
+  max-width: 38%;                      /* keeps Sleeper from eating the row */
+  opacity: 0;
+  transform: translateY(18px) scale(0.94);
+  transition: transform 0.75s var(--ease), opacity 0.5s var(--ease-soft);
+  pointer-events: none;
+}
+.overlay.is-open .overlay-avatar { opacity: 1; transform: translateY(0) scale(1); }
+.overlay-avatar svg { height: 100%; width: auto; fill: var(--accent, var(--bone-dim)); }
+.overlay-avatar img { height: 100%; width: auto; max-width: 100%; object-fit: contain; }
+
+.overlay-panel {
+  position: relative;
+  z-index: 2;
+  flex: 1 1 auto;
+  min-width: 0;                        /* lets the panel shrink instead of pushing the avatar out */
+  max-width: 920px;
+  max-height: 88dvh;
+  background: rgba(10, 10, 12, 0.97);
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  transform: translateY(16px);
+  opacity: 0;
+  transition: transform 0.5s var(--ease) 0.1s, opacity 0.5s var(--ease-soft) 0.1s;
+}
+.overlay.is-open .overlay-panel { transform: translateY(0); opacity: 1; }
+
+.overlay-panel-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 18px 50px 16px 22px;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  flex: none;
+}
+.overlay-panel-name {
+  font-family: var(--ui);
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent, var(--bone));
+}
+.overlay-panel-section {
+  font-family: var(--ui);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+}
+.overlay-close {
+  position: absolute;
+  right: 12px; top: 10px;
+  width: 32px; height: 32px;
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--bone-mid);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.overlay-close:hover { color: var(--bone); border-color: var(--bone-dim); }
+
+.overlay-panel-body {
+  overflow-y: auto;
+  padding: 22px;
+}
+/* Fetched pages carry their own header spacing meant for a full page — too
+   roomy inside a panel, so tighten it. The footer's "back to gym floor" link
+   and copyright are redundant here too. */
+.overlay-panel-body .page-head { padding: 0 0 20px; margin-bottom: 20px; }
+.overlay-panel-body .site-foot { display: none; }
+
+.overlay-loading {
+  font-family: var(--ui);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+}
+
+body.overlay-open { overflow: hidden; }
+
+/* Below this the row can't hold both, so the panel takes the whole screen. */
+@media (max-width: 900px) {
+  .overlay-avatar { display: none; }
+  .overlay-stage { padding: 0 16px; }
+  .overlay-panel { max-width: none; }
+}
+
+/* ===== Grids used by the section pages ================================== */
+
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.card {
+  border: 1px solid var(--line);
+  padding: 20px;
+  background: rgba(242, 235, 216, 0.02);
+}
+.card h3 {
+  font-family: var(--ui);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.card p { color: var(--bone-mid); font-size: 14px; }
+.card-foot { margin-top: 16px; display: flex; align-items: center; gap: 12px; }
+
+/* --- store --- */
+.product { border: 1px solid var(--line); }
+.product-shot {
+  aspect-ratio: 4 / 5;
+  background:
+    repeating-linear-gradient(45deg, rgba(242,235,216,0.035) 0 12px, transparent 12px 24px),
+    #0D0D10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bone-dim);
+  font-family: var(--ui);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.product-info { padding: 14px 16px 18px; }
+.product-name { font-family: var(--ui); font-weight: 700; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; }
+.product-meta { display: flex; justify-content: space-between; align-items: baseline; margin-top: 6px; color: var(--bone-mid); font-size: 13px; }
+.product-price { color: var(--bone); }
+
+/* --- quest board --- */
+.quest {
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--accent);
+  padding: 18px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+.quest-main { flex: 1 1 300px; }
+.quest-name { font-family: var(--ui); font-weight: 700; font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase; }
+.quest-desc { color: var(--bone-mid); font-size: 14px; margin-top: 4px; }
+.quest-reward { font-family: var(--ui); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-top: 8px; }
+.quests { display: grid; gap: 12px; }
+
+/* --- lab: the signup form --- */
+.signup { max-width: 460px; }
+.signup input {
+  width: 100%;
+  background: rgba(242, 235, 216, 0.05);
+  border: 1px solid var(--line);
+  color: var(--bone);
+  font-family: var(--body);
+  font-size: 16px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+.signup input:focus { outline: none; border-color: var(--bone-dim); }
+.signup input::placeholder { color: var(--bone-dim); }
+.signup .btn { width: 100%; }
+.form-msg { margin-top: 14px; font-size: 14px; min-height: 1.4em; }
+.form-msg.ok { color: var(--bone); }
+.form-msg.err { color: var(--slasher); }
+.fine-print { color: var(--bone-dim); font-size: 12px; margin-top: 16px; max-width: 46ch; }
+
+/* --- film room --- */
+.film {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+  padding-bottom: 26px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 26px;
+}
+.film:last-child { border-bottom: 0; }
+.film-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #0D0D10;
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bone-dim);
+  font-family: var(--ui);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 12px;
+}
+.film-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.film-date { font-family: var(--ui); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+.film-title { font-family: var(--ui); font-size: 19px; font-weight: 700; letter-spacing: -0.01em; margin: 6px 0 8px; }
+.film-body { color: var(--bone-mid); font-size: 14px; }
+
+@media (max-width: 700px) { .film { grid-template-columns: 1fr; } }
+
+/* --- FAQ --- */
+.faq { border-top: 1px solid var(--line); }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 18px 40px 18px 0;
+  position: relative;
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.005em;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: "+";
+  position: absolute;
+  right: 6px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent);
+  font-size: 20px;
+  line-height: 1;
+}
+.faq details[open] summary::after { content: "–"; }
+.faq summary:hover { color: var(--bone); }
+.faq-a { color: var(--bone-mid); padding: 0 0 20px; max-width: 68ch; font-size: 15px; }

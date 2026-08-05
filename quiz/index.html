@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#000000" />
+<title>What Kind of Fighter Are You? | Longuard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+<style>
+  /* The quiz runs full-screen and deliberately has no site chrome. This is the
+     one exception: a way back out to the gym floor, tucked under the top
+     letterbox bar so it never collides with the lockup. */
+  .exit-to-gym {
+    position: fixed;
+    /* matches the .bar-top height in style.css */
+    top: calc(clamp(34px, 6vh, 62px) + 12px);
+    left: 22px;
+    z-index: 60;
+    font-family: var(--ui);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(242, 235, 216, 0.42);
+    text-decoration: none;
+    transition: color 0.25s var(--ease);
+  }
+  .exit-to-gym:hover { color: var(--bone); }
+  @media (max-width: 759px) { .exit-to-gym { left: 16px; font-size: 10px; } }
+</style>
+</head>
+<body>
+
+<a class="exit-to-gym" href="/">&larr; The Gym</a>
+
+<!-- ============ HERO STAGE ============
+     Two backdrops: a still for the attract screen (the Arkham "key art" beat)
+     and a video from the menu onward. See assets/ASSETS.md for filenames. -->
+<div class="stage" aria-hidden="true">
+  <div class="hero-still" id="hero-still"></div>
+  <video class="hero-video" id="hero-video" muted loop playsinline autoplay preload="none"></video>
+  <div class="grade"></div>
+  <div class="video-fade"></div>
+  <div class="rain"></div>
+  <div class="scrim"></div>
+  <div class="grain"></div>
+</div>
+
+<div class="bloom" id="bloom" aria-hidden="true"></div>
+<div class="cut" id="cut" aria-hidden="true"></div>
+
+<!-- letterbox bars: the title-card frame. The bottom one carries the mark. -->
+<div class="bar bar-top" aria-hidden="true"></div>
+<div class="bar bar-bottom">
+  <p class="legal"><span>&copy; 2026 Longuard LLC</span><span>All Rights Reserved</span></p>
+</div>
+
+<!-- audio: muted until asked for, which is also what autoplay policy requires -->
+<div class="audio-ctl" id="audio-ctl">
+  <button class="audio-btn" id="audio-btn" aria-label="Unmute" aria-pressed="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9v6h4l5 4V5L8 9H4z"/><g class="waves"><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/></g><g class="cross"><path d="M17 9.5l5 5"/><path d="M22 9.5l-5 5"/></g></svg>
+  </button>
+  <div class="audio-dial">
+    <span class="audio-ticks" aria-hidden="true"></span>
+    <input class="audio-range" id="audio-range" type="range" min="0" max="100" step="25" value="50" aria-label="Volume" />
+  </div>
+</div>
+
+<main class="stage-content">
+
+  <!-- ============ ATTRACT ============ -->
+  <section id="screen-attract" class="screen">
+    <p class="kicker">Longuard</p>
+    <h1 class="game-title">What Kind of<br />Fighter Are You?</h1>
+    <p class="press-start" id="press-start">Press to Start</p>
+  </section>
+
+  <!-- ============ TITLE MENU ============ -->
+  <section id="screen-title" class="screen">
+    <p class="kicker">Longuard</p>
+    <h1 class="game-title game-title-sm">What Kind of<br />Fighter Are You?</h1>
+
+    <nav class="menu" id="title-menu">
+      <button class="menu-item" data-action="start"><span>New Game</span></button>
+      <button class="menu-item" data-action="briefing"><span>How It Works</span></button>
+      <button class="menu-item" data-action="roster"><span>The Roster</span></button>
+    </nav>
+  </section>
+
+  <!-- ============ ROSTER (opens from the menu) ============ -->
+  <section id="screen-roster" class="screen">
+    <p class="kicker">The Roster</p>
+    <h2 class="chapter-title">Four Fighters</h2>
+    <p class="lede">One of them is you. Pick a card to read them.</p>
+
+    <div class="roster-view">
+      <div class="roster" id="roster">
+      <button class="record locked" data-archetype="slasher">
+        <span class="record-art"><img alt="" /></span>
+        <span class="record-name">The Slasher</span>
+        <span class="record-el">Warrior</span>
+      </button>
+      <button class="record locked" data-archetype="stoic">
+        <span class="record-art"><img alt="" /></span>
+        <span class="record-name">The Stoic</span>
+        <span class="record-el">Tank</span>
+      </button>
+      <button class="record locked" data-archetype="joker">
+        <span class="record-art"><img alt="" /></span>
+        <span class="record-name">The Joker</span>
+        <span class="record-el">Bard</span>
+      </button>
+      <button class="record locked" data-archetype="sleeper">
+        <span class="record-art"><img alt="" /></span>
+        <span class="record-name">The Sleeper</span>
+        <span class="record-el">Assassin</span>
+      </button>
+      </div>
+
+      <aside class="roster-panel" id="roster-panel" aria-live="polite"></aside>
+    </div>
+
+    <button class="btn" data-action="back-to-title">Back</button>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="screen-briefing" class="screen">
+    <p class="kicker">How It Works</p>
+    <h2 class="chapter-title">The Rules</h2>
+    <ol class="rules">
+      <li>Nine questions. One ordinary day of fight camp, start to finish.</li>
+      <li>No right answers. Don't think too much and answer fast, answer honest.</li>
+      <li>One of four fighters is you. Only yours gets unlocked.</li>
+      <li>You'll get a full read: how you train, your strengths, your weaknesses, and who you're compatible with.</li>
+    </ol>
+    <button class="btn" data-action="back-to-title">Back</button>
+  </section>
+
+  <!-- ============ CHAPTER CARD ============ -->
+  <section id="screen-chapter" class="screen">
+    <p class="kicker">Fight Camp</p>
+    <h2 class="chapter-title chapter-big">Day 21</h2>
+    <div class="rule"><span class="rule-fill" id="chapter-rule"></span></div>
+    <p class="press-start">Loading</p>
+  </section>
+
+  <!-- ============ MISSION BRIEF ============ -->
+  <section id="screen-brief" class="screen">
+    <p class="kicker">Briefing</p>
+    <p class="brief-body" id="brief-body"></p>
+    <button class="btn btn-primary btn-game" data-action="begin"><span>Begin</span></button>
+  </section>
+
+  <!-- ============ QUESTIONS ============ -->
+  <section id="screen-quiz" class="screen">
+    <div class="q-head">
+      <span class="counter"><span id="q-pct">0</span><span class="counter-of">%</span></span>
+      <div class="rule"><span class="rule-fill" id="progress-fill"></span></div>
+    </div>
+
+    <div class="q-body" id="q-body">
+      <p class="kicker q-bridge" id="q-bridge"></p>
+      <h2 class="question" id="q-text"></h2>
+      <div class="options" id="q-options"></div>
+    </div>
+  </section>
+
+  <!-- ============ EMAIL GATE ============ -->
+  <section id="screen-gate" class="screen">
+    <p class="kicker">Result Ready</p>
+    <h2 class="chapter-title">One Last Thing</h2>
+    <p class="lede">Enter your email and we'll unlock your full fighter profile.</p>
+    <form id="email-form">
+      <input type="text" id="name-input" placeholder="Your name" autocomplete="given-name" required />
+      <input type="email" id="email-input" placeholder="you@email.com" autocomplete="email" inputmode="email" required />
+      <button type="submit" class="btn btn-primary">Unlock my fighter</button>
+    </form>
+    <p class="fine-print">We'll send a copy of your results to your email, and you'll gain Longuard community access for free &amp; opportunities to shape the direction of the brand.</p>
+  </section>
+
+  <!-- ============ REVEAL ============ -->
+  <section id="screen-reveal" class="screen">
+    <div class="reveal-stage">
+      <p class="kicker reveal-caption" id="reveal-caption">Thinking...</p>
+      <div class="reveal-cards" id="reveal-cards"></div>
+    </div>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section id="screen-result" class="screen">
+
+    <div class="result-body" id="result-body">
+
+      <p class="kicker reveal-item">Fighter unlocked</p>
+
+      <!-- header: portrait + name + element -->
+      <div class="dossier">
+        <div class="record unlocked" id="result-record" data-archetype="">
+          <div class="record-art">
+            <video id="result-video" muted loop playsinline preload="none"></video>
+            <img src="" alt="" id="result-avatar-img" />
+          </div>
+        </div>
+        <div class="dossier-head">
+          <h1 id="result-title" class="result-name"></h1>
+          <p class="result-tag reveal-item" id="result-tag"></p>
+          <p class="result-element reveal-item" id="result-element"></p>
+        </div>
+      </div>
+
+      <!-- bio sits directly under the header -->
+      <div class="section" id="result-bio"></div>
+
+      <!-- pentagon + spectrum -->
+      <div class="charts">
+        <div class="chart-card reveal-item">
+          <h3 class="kicker">Fighter profile</h3>
+          <div class="radar-wrap" id="radar"></div>
+          <p class="chart-note" id="radar-note"></p>
+        </div>
+        <div class="chart-card reveal-item">
+          <h3 class="kicker">Where you lean</h3>
+          <div class="spectra" id="spectra"></div>
+        </div>
+      </div>
+
+      <!-- in the gym / under pressure, side by side -->
+      <div class="split" id="result-split"></div>
+
+      <!-- your people, strengths, weaknesses, the work -->
+      <div id="result-sections"></div>
+
+      <p class="fit-line reveal-item" id="result-fit"></p>
+
+      <!-- element matchups -->
+      <div class="matchups" id="result-matchups"></div>
+
+      <div class="result-actions reveal-item">
+        <button class="btn btn-primary" id="share-btn">Share with friends</button>
+        <button class="btn" id="retake-btn">Back to main menu</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

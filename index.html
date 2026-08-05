@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#000000" />
+<title>Longuard</title>
+<meta name="description" content="Muay Thai apparel built in the isolation of actually training." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Longuard" />
+<meta property="og:description" content="Muay Thai apparel built in the isolation of actually training." />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Longuard" />
+<meta name="twitter:description" content="Muay Thai apparel built in the isolation of actually training." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css" />
+</head>
+<!-- Three stages live on this one page: attract → menu → gym. The stage is a
+     class on <body>; site.js switches it. -->
+<body data-section="home" class="home stage-attract">
+
+<!-- Full-bleed backdrop. The hero video carries the first two stages, the
+     illustrated gym floor carries the third. -->
+<div class="backdrop" aria-hidden="true">
+  <video class="hero-video" id="hero-video" muted loop playsinline preload="none"></video>
+  <div class="scene" id="scene">
+    <!-- The plate holds the art's own 16:9 and overflows the viewport, so the
+         guide hotspots stay glued to the illustration at any window shape. -->
+    <div class="scene-plate" id="scene-plate"></div>
+  </div>
+  <div class="scrim"></div>
+</div>
+
+<!-- Letterbox bars, same move as the quiz's title card. Bottom bar carries
+     the legal line, well away from the logo/prompt in the middle. Only shown
+     on the attract beat. -->
+<div class="bar bar-top" aria-hidden="true"></div>
+<div class="bar bar-bottom" aria-hidden="true">
+  <p class="legal"><span>&copy; 2026 Longuard LLC</span><span>All Rights Reserved</span></p>
+</div>
+
+<!-- Audio: muted until asked for, which is also what autoplay policy
+     requires. Same control as the quiz — top right, toggle plus a volume
+     dial that drops out of it on interaction. -->
+<div class="audio-ctl" id="audio-ctl">
+  <button class="audio-btn" id="audio-btn" aria-label="Unmute" aria-pressed="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9v6h4l5 4V5L8 9H4z"/><g class="waves"><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/></g><g class="cross"><path d="M17 9.5l5 5"/><path d="M22 9.5l-5 5"/></g></svg>
+  </button>
+  <div class="audio-dial">
+    <span class="audio-ticks" aria-hidden="true"></span>
+    <input class="audio-range" id="audio-range" type="range" min="0" max="100" step="25" value="50" aria-label="Volume" />
+  </div>
+</div>
+
+<header id="site-nav"></header>
+
+<main class="stages">
+
+  <section class="stage" id="stage-attract">
+    <img class="attract-logo" src="/assets/home/wordmark-white.svg" alt="Longuard" />
+    <p class="press-start">Press to Start</p>
+  </section>
+
+  <section class="stage" id="stage-menu">
+    <img class="menu-logo" src="/assets/home/wordmark-white.svg" alt="Longuard" />
+    <nav class="home-menu" id="home-menu" aria-label="Main menu"></nav>
+  </section>
+
+  <section class="stage" id="stage-gym">
+    <p class="gym-hint" id="gym-hint" aria-hidden="true">Start by selecting the Cornerwoman &mdash; she'll explain how this works.</p>
+    <!-- Desktop: the scene behind this is the screen, so there's nothing here.
+         Phones can't show a 16:9 room, so they get the same guides as cards. -->
+    <div class="guide-cards" id="guide-cards"></div>
+  </section>
+
+</main>
+
+<!-- Guide overlay: clicking a figure on the gym floor opens this instead of
+     navigating away. The clicked avatar renders large on one side, the
+     section's own content loads into the panel next to it. -->
+<div class="overlay" id="overlay" aria-hidden="true">
+  <div class="overlay-scrim" id="overlay-scrim"></div>
+  <div class="overlay-stage">
+    <div class="overlay-avatar" id="overlay-avatar"></div>
+    <div class="overlay-panel" id="overlay-panel">
+      <div class="overlay-panel-head">
+        <span class="overlay-panel-name" id="overlay-panel-name"></span>
+        <span class="overlay-panel-section" id="overlay-panel-section"></span>
+        <button class="overlay-close" id="overlay-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="overlay-panel-body" id="overlay-panel-body"></div>
+    </div>
+  </div>
+</div>
+
+<script src="/site.js"></script>
+</body>
+</html>

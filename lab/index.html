@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#000000" />
+<title>Lab — Longuard</title>
+<meta name="description" content="Where Longuard gets built, tested, and improved." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Lab — Longuard" />
+<meta property="og:description" content="Where Longuard gets built, tested, and improved." />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Lab — Longuard" />
+<meta name="twitter:description" content="Where Longuard gets built, tested, and improved." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css" />
+<style>:root { --accent: var(--sleeper); }</style>
+</head>
+<body data-section="lab">
+
+<header id="site-nav"></header>
+
+<main class="wrap">
+
+  <div class="page-head">
+    <p class="kicker">Sleeper &mdash; The couch</p>
+    <h1 class="page-title">The Lab</h1>
+    <p class="lede">Real-time behind-the-scenes updates. Join for early access to events and drops, a say in the direction of Longuard, and exclusive pricing.</p>
+  </div>
+
+  <section class="block">
+    <h2 class="section-title">Help shape the direction of Longuard</h2>
+    <p class="section-note">Goes to the same MailerLite list the quiz feeds.</p>
+
+    <form class="signup" id="lab-form">
+      <input type="text" id="lab-name" placeholder="Your name" autocomplete="given-name" required />
+      <input type="email" id="lab-email" placeholder="you@email.com" autocomplete="email" inputmode="email" required />
+      <button type="submit" class="btn btn-primary">Join the list</button>
+      <p class="form-msg" id="lab-msg" role="status" aria-live="polite"></p>
+    </form>
+
+    <p class="fine-print">Free community access, a say in where the brand goes, and first word on anything that gets made. No spam, leave whenever.</p>
+  </section>
+
+  <section class="block">
+    <h2 class="section-title">On the bench</h2>
+    <p class="section-note">What's currently being worked out.</p>
+    <div class="grid">
+      <article class="card">
+        <h3>Colorway 05</h3>
+        <p>Only 3&ndash;5 will be made. Lab members get to vote.</p>
+      </article>
+      <article class="card">
+        <h3>New tech</h3>
+        <p>Upgraded anti-microbial finishes, cooling tech, and a reflective logo finish.</p>
+      </article>
+      <article class="card">
+        <h3>Next piece</h3>
+        <p>Seeing what you all want next &mdash; hats, sports bras, or t-shirts.</p>
+      </article>
+    </div>
+  </section>
+
+  <footer class="site-foot">
+    <span>&copy; 2026 Longuard LLC</span>
+    <span><a href="/" style="color:inherit">Back to the gym floor</a></span>
+  </footer>
+
+</main>
+
+<script src="/site.js"></script>
+<script>
+/* Posts to /api/subscribe, which reuses the same MailerLite credentials the
+   quiz already runs on. A failure is shown rather than swallowed — unlike the
+   quiz, there's no result waiting behind this form, so silence would just look
+   like nothing happened. */
+document.getElementById("lab-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.currentTarget;
+  const btn = form.querySelector("button");
+  const msg = document.getElementById("lab-msg");
+
+  btn.disabled = true;
+  btn.textContent = "Sending...";
+  msg.textContent = "";
+  msg.className = "form-msg";
+
+  try {
+    const res = await fetch("/api/subscribe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: document.getElementById("lab-name").value.trim(),
+        email: document.getElementById("lab-email").value.trim(),
+        source: "lab",
+      }),
+    });
+    if (!res.ok) throw new Error(`Server responded ${res.status}`);
+    msg.textContent = "You're in. Check your inbox.";
+    msg.className = "form-msg ok";
+    form.reset();
+  } catch (err) {
+    console.error(err);
+    msg.textContent = "That didn't go through. Try again in a moment.";
+    msg.className = "form-msg err";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Join the list";
+  }
+});
+</script>
+</body>
+</html>

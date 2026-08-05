@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Video/image masters — these live outside the repo.
+# GitHub rejects files over 100MB and its web uploader stops at 25MB, so a
+# single master dropped in here blocks the whole push.
+*.mov
+sm.quiz.hero.mp4
+_originals-fighters/
+
+# Full-res avatar masters — processed copies live alongside them.
+assets/guides/_masters/

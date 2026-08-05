@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Longuard Quiz — Design Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0B0B0D;
+    --surface: #161618;
+    --border: #2A2A2E;
+    --text: #F2F0EC;
+    --text-dim: #8A8A8E;
+    --slasher: #C1272D;
+    --stoic: #D8CBB8;
+    --stoic-text: #2A241C;
+    --joker: #D4AF37;
+    --sleeper: #3A3A40;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    padding: 40px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  h1, h2, .display {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  section { margin-bottom: 56px; }
+  h2 { font-size: 14px; color: var(--text-dim); letter-spacing: 3px; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+
+  .swatch-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .swatch { width: 140px; }
+  .swatch-color { height: 70px; border: 1px solid var(--border); }
+  .swatch-label { font-size: 12px; color: var(--text-dim); margin-top: 6px; }
+  .swatch-hex { font-size: 11px; color: var(--text-dim); font-family: monospace; }
+
+  .cut-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+    padding: 20px;
+  }
+
+  .mock-frame {
+    background: #050506;
+    border: 1px solid var(--border);
+    padding: 32px;
+  }
+
+  .eyebrow { font-size: 12px; letter-spacing: 3px; color: var(--slasher); font-weight: 700; margin-bottom: 8px; font-family: 'Rajdhani', sans-serif; }
+
+  .progress-track { height: 6px; background: var(--border); display: flex; gap: 3px; margin-bottom: 20px; }
+  .progress-seg { flex: 1; background: var(--border); }
+  .progress-seg.filled { background: var(--slasher); }
+
+  .q-title { font-size: 22px; margin-bottom: 20px; }
+
+  .option {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--border);
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    transition: border-color 0.15s;
+  }
+  .option:hover { border-left-color: var(--slasher); }
+
+  .result-name { font-size: 40px; color: var(--slasher); margin-bottom: 4px; }
+  .result-tag { font-size: 14px; color: var(--text-dim); font-style: italic; margin-bottom: 20px; }
+  .result-desc { font-size: 14px; color: var(--text); line-height: 1.6; margin-bottom: 24px; max-width: 480px; }
+
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .stat-block h3 { font-family: 'Rajdhani', sans-serif; font-size: 13px; letter-spacing: 2px; color: var(--text-dim); margin-bottom: 8px; text-transform: uppercase; }
+  .stat-block ul { list-style: none; font-size: 13px; line-height: 1.7; color: var(--text); }
+  .stat-block li { padding-left: 14px; position: relative; }
+  .stat-block li::before { content: ""; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; background: var(--slasher); }
+
+  .fit-chip { display: inline-block; background: var(--surface); border: 1px solid var(--slasher); color: var(--text); font-size: 12px; padding: 8px 14px; letter-spacing: 1px; font-family: 'Rajdhani', sans-serif; font-weight: 600; text-transform: uppercase; }
+
+  .archetype-strip { display: flex; gap: 10px; margin-top: 24px; }
+  .archetype-chip { flex: 1; text-align: center; padding: 10px 8px; font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; border: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<h1 style="font-size: 28px; margin-bottom: 4px;">Longuard Quiz</h1>
+<p style="color: var(--text-dim); font-size: 13px; margin-bottom: 40px;">Design reference — tactical UI base + fighting-game character-select structure</p>
+
+<section>
+  <h2>Base palette (used across all screens)</h2>
+  <div class="swatch-row">
+    <div class="swatch"><div class="swatch-color" style="background:#0B0B0D;"></div><div class="swatch-label">Background</div><div class="swatch-hex">#0B0B0D</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#161618;"></div><div class="swatch-label">Surface / card</div><div class="swatch-hex">#161618</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#2A2A2E;"></div><div class="swatch-label">Border / hairline</div><div class="swatch-hex">#2A2A2E</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#F2F0EC;"></div><div class="swatch-label">Primary text</div><div class="swatch-hex">#F2F0EC</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Archetype accents (only appear on that archetype's own card/result, not the base UI)</h2>
+  <div class="swatch-row">
+    <div class="swatch"><div class="swatch-color" style="background:#C1272D;"></div><div class="swatch-label">Slasher — red</div><div class="swatch-hex">#C1272D</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#D8CBB8;"></div><div class="swatch-label">Stoic — marble beige</div><div class="swatch-hex">#D8CBB8</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#D4AF37;"></div><div class="swatch-label">Joker — gold</div><div class="swatch-hex">#D4AF37</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#3A3A40;"></div><div class="swatch-label">Sleeper — graphite black</div><div class="swatch-hex">#3A3A40</div></div>
+  </div>
+  <p style="font-size: 12px; color: var(--text-dim); margin-top: 12px;">Sleeper uses graphite instead of pure black so it still reads as a distinct color against the near-black background, same idea as "black," just visible.</p>
+</section>
+
+<section>
+  <h2>Typography</h2>
+  <p class="display" style="font-size: 22px;">Rajdhani — headers, archetype names, labels, all caps</p>
+  <p style="font-size: 15px; margin-top: 8px;">Inter — body copy, descriptions, questions. Free on Google Fonts, pairs with Rajdhani's condensed technical feel without competing with it.</p>
+</section>
+
+<section>
+  <h2>Screen mock — question</h2>
+  <div class="mock-frame">
+    <div class="eyebrow">QUESTION 3 OF 7</div>
+    <div class="progress-track">
+      <div class="progress-seg filled"></div><div class="progress-seg filled"></div><div class="progress-seg filled"></div>
+      <div class="progress-seg"></div><div class="progress-seg"></div><div class="progress-seg"></div><div class="progress-seg"></div>
+    </div>
+    <div class="q-title">A setback happens. You:</div>
+    <div class="option">Get back up immediately, no time to think</div>
+    <div class="option">Analyze what went wrong first</div>
+    <div class="option">Get mad, then move on fast</div>
+    <div class="option">Laugh it off, wasn't that deep</div>
+  </div>
+  <p style="font-size: 12px; color: var(--text-dim); margin-top: 10px;">Angled corner cut (clip-path) on panels and options instead of rounded corners, this is the single biggest signature of the tactical-UI look. Left border on options fills with the accent color on hover/select.</p>
+</section>
+
+<section>
+  <h2>Screen mock — result (shown as Slasher)</h2>
+  <div class="mock-frame">
+    <div class="eyebrow">YOU ARE</div>
+    <div class="result-name">THE SLASHER</div>
+    <div class="result-tag">"Let the results speak."</div>
+    <div class="result-desc">Hard work over hype. Shows up every day, head down, no interest in praise. Doesn't talk about the work, just does it, the work no one else wants to.</div>
+    <div class="stat-grid">
+      <div class="stat-block">
+        <h3>Strengths</h3>
+        <ul>
+          <li>Unmatched consistency</li>
+          <li>Reliable in any condition</li>
+          <li>Builds real skill over time</li>
+        </ul>
+      </div>
+      <div class="stat-block">
+        <h3>Weaknesses</h3>
+        <ul>
+          <li>Workaholic to a fault</li>
+          <li>Doesn't know when to stop</li>
+          <li>Burnout hits hard when it hits</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fit-chip">Fit: Tight upper body, looser at the waist</div>
+  </div>
+</section>
+
+<section>
+  <h2>Archetype select strip (used on intro or result-compare states)</h2>
+  <div class="archetype-strip">
+    <div class="archetype-chip" style="border-color:#C1272D; color:#C1272D;">Slasher</div>
+    <div class="archetype-chip" style="border-color:#D8CBB8; color:#D8CBB8;">Stoic</div>
+    <div class="archetype-chip" style="border-color:#D4AF37; color:#D4AF37;">Joker</div>
+    <div class="archetype-chip" style="border-color:#3A3A40; color:#8A8A8E;">Sleeper</div>
+  </div>
+</section>
+
+</body>
+</html>

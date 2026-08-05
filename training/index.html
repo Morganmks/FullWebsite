@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#000000" />
+<title>Training — Longuard</title>
+<meta name="description" content="The gear that'll hold you up in your toughest times." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Training — Longuard" />
+<meta property="og:description" content="The gear that'll hold you up in your toughest times." />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Training — Longuard" />
+<meta name="twitter:description" content="The gear that'll hold you up in your toughest times." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css" />
+<style>:root { --accent: var(--slasher); }</style>
+</head>
+<body data-section="training">
+
+<header id="site-nav"></header>
+
+<main class="wrap">
+
+  <div class="page-head">
+    <p class="kicker">Slasher &mdash; Heavy bags</p>
+    <h1 class="page-title">Training Area</h1>
+    <p class="lede">Take the quiz to find out your fighting style. Then complete the trainings to improve your skills.</p>
+  </div>
+
+  <!-- ENTRY POINT — the existing quiz, untouched, living at /quiz/ -->
+  <section class="block">
+    <h2 class="section-title">Start here</h2>
+    <p class="section-note">Answer 9 quick questions and unlock your fighter&rsquo;s personality.</p>
+    <div class="card">
+      <h3>What Kind of Fighter Are You?</h3>
+      <p>Imagine you're on Day 21 of fight camp. We'll ask you a few questions about how you train and your preferences. At the end you get a full read on your strengths, weaknesses, and who you're compatible with.</p>
+      <div class="card-foot">
+        <a class="btn btn-primary" href="/quiz/">Take the quiz now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUEST BOARD — static for now. Each quest becomes wired work later:
+       referral needs a code + attribution, the vote needs a poll backend. -->
+  <section class="block">
+    <h2 class="section-title">Training Schedule</h2>
+    <p class="section-note">Ways to seriously improve.</p>
+
+    <div class="quests">
+      <article class="quest">
+        <div class="quest-main">
+          <p class="quest-name">Bring a friend to the Longuard gym</p>
+          <p class="quest-desc">Send your referral link to a training partner. When they finish the quiz, you both move up.</p>
+          <p class="quest-reward">Reward &mdash; early access to the next drop and a pre-order price discount</p>
+        </div>
+        <span class="stub">Not wired yet</span>
+      </article>
+
+      <article class="quest">
+        <div class="quest-main">
+          <p class="quest-name">Post your fighter on Instagram</p>
+          <p class="quest-desc">Share your result on Instagram and tag @longuard.brand &mdash; we repost the ones that land.</p>
+          <p class="quest-reward">Reward &mdash; feature on the Longuard feed</p>
+        </div>
+        <span class="stub">Not wired yet</span>
+      </article>
+
+      <article class="quest">
+        <div class="quest-main">
+          <p class="quest-name">Vote on the next colorway</p>
+          <p class="quest-desc">Help us choose what colors to make next. One vote per person &mdash; results are revealed when the poll closes.</p>
+          <p class="quest-reward">Reward &mdash; your pick actually gets produced</p>
+        </div>
+        <span class="stub">Not wired yet</span>
+      </article>
+    </div>
+  </section>
+
+  <footer class="site-foot">
+    <span>&copy; 2026 Longuard LLC</span>
+    <span><a href="/" style="color:inherit">Back to the gym floor</a></span>
+  </footer>
+
+</main>
+
+<script src="/site.js"></script>
+</body>
+</html>
