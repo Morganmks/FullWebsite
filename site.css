@@ -80,7 +80,8 @@ img { max-width: 100%; display: block; }
   text-decoration: none;
 }
 .nav-mark img {
-  height: 20px;
+  /* compact mark, so no tail to collapse into a dot at nav size */
+  height: 13px;
   width: auto;
   display: block;
 }
@@ -518,8 +519,18 @@ body:not(.stage-attract) .bar { opacity: 0; }
 /* Sits where the "LONGUARD" kicker used to. Same wordmark file the attract
    screen uses, so the logo is one asset everywhere it appears. Smaller than
    the attract lockup — here it's a label above the menu, not the title card. */
+/* Uses wordmark-compact.svg — the same mark with the L and D descender tails
+   cropped off. Those tails taper to a sub-pixel point at small sizes, so the
+   thin end disappears and only the thick end survives, which is the stray
+   "dot" under the D. Cropping lets the mark go small and stay clean.
+   The full-tail mark is still used on the attract screen, where it renders
+   at 240-420px and the tails read as the curves they're meant to be.
+   Sized against the menu items, which are clamp(13px, 1.6vw, 19px): the mark's
+   cap height is width x 0.106, so ~122px puts the letters at ~12.9px against
+   the menu text's ~13.9px — just under it, which is the intent. If the menu
+   item size changes, rescale this with it. */
 .menu-logo {
-  width: clamp(116px, 13vw, 178px);
+  width: clamp(96px, 9vw, 122px);
   height: auto;
   margin-bottom: clamp(14px, 2vh, 22px);
   opacity: 0.92;
@@ -596,6 +607,12 @@ body.home #site-nav {
   left: var(--x);
   top: var(--y);
   height: var(--h);
+  /* Width comes from the art's own ratio (set as --ar by site.js once the
+     image loads), NOT from shrink-to-fit. An absolutely-positioned box with
+     `left: 88%` can only shrink-to-fit into the 12% left to the right edge,
+     which squashed Joker and left his click target narrower than he looked.
+     The fallback matches the placeholder silhouette's ratio. */
+  aspect-ratio: var(--ar, 0.39);
   /* Height is the size lever; the width follows whatever the art's own aspect
      ratio is, so a wider or narrower character file needs no config change. */
   width: auto;
@@ -621,7 +638,7 @@ body.home #site-nav {
 
 .guide-art { display: block; height: 100%; }
 .guide-art svg { height: 100%; width: auto; fill: #000; display: block; }
-.guide-art img { height: 100%; width: auto; }
+.guide-art img { height: 100%; width: auto; max-width: none; }
 
 /* Placeholder silhouettes are pure black on a dark scene, so they need an edge
    to read as a shape at all. Real art drops the outline. */

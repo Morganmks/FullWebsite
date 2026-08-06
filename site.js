@@ -137,6 +137,22 @@ function resolveImage(base, onFound, onMissing, exts = CUTOUT_EXTS) {
   tryNext();
 }
 
+// Resolved guide art, keyed by guide id. Filled the first time any surface
+// (gym floor, phone cards, overlay) successfully probes a character's file.
+// The overlay used to clone whatever markup the floor hotspot happened to hold
+// at that instant, so opening a guide before its PNG had finished downloading
+// showed the black placeholder silhouette and never recovered. Everything now
+// reads from here instead of from each other's DOM.
+const GUIDE_ART = {};
+
+function resolveGuideArt(id, onReady) {
+  if (GUIDE_ART[id]) { onReady(GUIDE_ART[id]); return; }
+  resolveImage(`/assets/guides/${id}`, (url) => {
+    GUIDE_ART[id] = url;
+    onReady(url);
+  });
+}
+
 /* ---------- Gym-floor tutorial hint ---------------------------------------
    First-time nudge: walks a new visitor through the five guides in order,
    one at a time. The hint text and a glow on the current target both point
@@ -213,7 +229,7 @@ function mountNav() {
 
   host.innerHTML = `
     <div class="nav-inner">
-      <a class="nav-mark" href="/" aria-label="Longuard, home"><img src="/assets/home/nav-mark.png" alt="Longuard" /></a>
+      <a class="nav-mark" href="/" aria-label="Longuard, home"><img src="/assets/home/wordmark-compact.svg" alt="Longuard" /></a>
       <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links">
         <span aria-hidden="true"></span><span class="sr-only">Menu</span>
       </button>
@@ -295,10 +311,22 @@ function mountScene() {
       </span>`;
 
     // Real art, if it's been dropped in, replaces the placeholder silhouette.
-    resolveImage(`/assets/guides/${g.id}`, (url) => {
+    resolveGuideArt(g.id, (url) => {
       const art = a.querySelector(".guide-art");
-      art.innerHTML = `<img src="${url}" alt="" />`;
-      a.classList.add("has-art");
+      const img = new Image();
+      img.alt = "";
+      // Pin the hotspot's aspect ratio to the art's own. Without this the box
+      // is shrink-to-fit, and an absolutely-positioned box with `left: 88%`
+      // can only be as wide as the space left to the right edge — which
+      // squashed Joker (and would squash anyone else pushed near an edge),
+      // and left his click target narrower than he looked.
+      img.onload = () => {
+        if (img.naturalHeight) a.style.setProperty("--ar", img.naturalWidth / img.naturalHeight);
+        art.innerHTML = "";
+        art.appendChild(img);
+        a.classList.add("has-art");
+      };
+      img.src = url;
     });
 
     plate.appendChild(a);
@@ -346,7 +374,7 @@ function mountGuideCards() {
   ).join("");
 
   GUIDES.forEach((g) => {
-    resolveImage(`/assets/guides/${g.id}`, (url) => {
+    resolveGuideArt(g.id, (url) => {
       const fig = host.querySelector(`.guide-card[href="${g.href}"] .guide-card-fig`);
       if (fig) fig.innerHTML = `<img src="${url}" alt="" />`;
     });
@@ -613,6 +641,7 @@ function mountAudio() {
 
 let overlayOpen = false;
 let overlayApi = null;
+let avatarToken = 0; // newest overlay open wins the async art resolve
 
 function mountOverlay() {
   const overlay = document.getElementById("overlay");
@@ -655,10 +684,24 @@ function mountOverlay() {
 
     document.querySelectorAll(".guide").forEach((g) => g.classList.toggle("is-active", g === sourceEl));
 
-    // The avatar in the overlay is the same art (or placeholder silhouette)
-    // as the hotspot just clicked, just rendered large.
-    const art = sourceEl && sourceEl.querySelector(".guide-art");
-    avatarHost.innerHTML = art ? art.innerHTML : "";
+    // Resolve the avatar from the shared cache rather than cloning whatever
+    // the floor hotspot currently holds. Cloning meant that opening a guide
+    // before its PNG had downloaded — which is exactly what happens on a cold
+    // load, or when you arrive via ?open= or a nav click — copied the black
+    // placeholder silhouette and then never updated it.
+    const token = ++avatarToken;
+    avatarHost.innerHTML = silhouette();
+    resolveGuideArt(guide.id, (url) => {
+      if (token !== avatarToken) return; // a different guide was opened meanwhile
+      const img = new Image();
+      img.alt = "";
+      img.onload = () => {
+        if (token !== avatarToken) return;
+        avatarHost.innerHTML = "";
+        avatarHost.appendChild(img);
+      };
+      img.src = url;
+    });
 
     panelName.textContent = guide.name;
     panelSection.textContent = guide.section;
@@ -686,6 +729,11 @@ function mountOverlay() {
       const doc = new DOMParser().parseFromString(html, "text/html");
       const main = doc.querySelector("main");
       panelBody.innerHTML = main ? main.innerHTML : "<p>Couldn't load this section.</p>";
+      // The section pages mark their YouTube embeds loading="lazy", which is
+      // right for a real page load. Injected into a panel that was display:none
+      // a moment ago, the lazy trigger is unreliable and the player can end up
+      // showing "Video unavailable". Force them to load now.
+      panelBody.querySelectorAll("iframe[loading]").forEach((f) => f.removeAttribute("loading"));
     } catch (e) {
       panelBody.innerHTML = `<p>Couldn't load this section here. <a href="${guide.href}" style="color:var(--bone)">Open it directly</a> instead.</p>`;
     }
