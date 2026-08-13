@@ -447,24 +447,62 @@ body:not(.stage-attract) .bar { opacity: 0; }
      up above the viewport entirely. */
   position: fixed;
   z-index: 5;
-  bottom: clamp(28px, 6vh, 60px);
+  bottom: clamp(24px, 5vh, 52px);
   left: 50%;
   transform: translateX(-50%);
+  display: flex;
+  align-items: stretch;
+  max-width: min(92vw, 720px);
+  pointer-events: auto;
   font-family: var(--ui);
+  background: linear-gradient(180deg, rgba(16, 16, 19, 0.96), rgba(9, 9, 11, 0.96));
+  border: 1px solid color-mix(in srgb, var(--accent, #fff) 45%, transparent);
+  box-shadow:
+    0 0 30px -8px color-mix(in srgb, var(--accent, #fff) 45%, transparent),
+    0 18px 44px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+}
+
+/* step counter chip, like a quest tracker */
+.gym-hint-step {
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  font-size: clamp(13px, 1.2vw, 16px);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--accent, var(--bone));
+  background: color-mix(in srgb, var(--accent, #fff) 14%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--accent, #fff) 34%, transparent);
+}
+.gym-hint-step span { color: var(--bone-dim); font-weight: 600; font-size: 0.78em; }
+
+.gym-hint-text {
+  padding: 13px 18px;
   font-size: clamp(12px, 1.15vw, 15px);
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.03em;
   color: var(--bone);
-  text-align: center;
-  pointer-events: none;
-  max-width: min(90vw, 640px);
-  padding: 11px 22px;
-  border: 1px solid rgba(242, 235, 216, 0.16);
-  border-radius: 999px;
-  background: rgba(8, 8, 10, 0.72);
-  backdrop-filter: blur(8px);
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.9);
+  text-align: left;
+  align-self: center;
 }
+
+.gym-hint-skip {
+  flex: none;
+  padding: 0 16px;
+  background: none;
+  border: 0;
+  border-left: 1px solid color-mix(in srgb, var(--accent, #fff) 28%, transparent);
+  font-family: var(--ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+  cursor: pointer;
+  transition: color 0.2s var(--ease), background 0.2s var(--ease);
+}
+.gym-hint-skip:hover { color: var(--bone); background: rgba(242, 235, 216, 0.07); }
 @media (max-width: 759px) {
   .gym-hint { display: none; }
 }
@@ -974,8 +1012,15 @@ body.audio-on .audio-btn .cross { opacity: 0; }
   min-width: 0;                        /* lets the panel shrink instead of pushing the avatar out */
   max-width: 920px;
   max-height: 88dvh;
-  background: rgba(10, 10, 12, 0.97);
-  border: 1px solid var(--line);
+  /* Game-UI framing: the panel takes the guide's own accent as its border and
+     throws a soft bloom of it, so each section reads as a different screen
+     rather than the same grey box with different words in it. */
+  background: linear-gradient(180deg, rgba(15, 15, 18, 0.985), rgba(8, 8, 10, 0.985));
+  border: 1px solid var(--accent, var(--line));
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.65),
+    0 0 44px -10px color-mix(in srgb, var(--accent, #fff) 55%, transparent),
+    0 28px 70px rgba(0, 0, 0, 0.7);
   display: flex;
   flex-direction: column;
   transform: translateY(16px);
@@ -984,14 +1029,39 @@ body.audio-on .audio-btn .cross { opacity: 0; }
 }
 .overlay.is-open .overlay-panel { transform: translateY(0); opacity: 1; }
 
+/* Two diagonal corner brackets — the cheapest, most legible bit of game-HUD
+   vocabulary. Drawn on the panel itself so they track its size. */
+.overlay-panel::before,
+.overlay-panel::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--accent, var(--bone));
+  pointer-events: none;
+}
+.overlay-panel::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.overlay-panel::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+
 .overlay-panel-head {
   display: flex;
   align-items: baseline;
   gap: 10px;
-  padding: 18px 50px 16px 22px;
-  border-bottom: 1px solid var(--line);
+  padding: 16px 58px 14px 20px;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent, #fff) 38%, transparent);
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--accent, #fff) 16%, transparent),
+    transparent 62%);
   position: relative;
   flex: none;
+}
+/* accent spine down the left of the header, like a selected row */
+.overlay-panel-head::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--accent, var(--bone));
 }
 .overlay-panel-name {
   font-family: var(--ui);
@@ -1011,15 +1081,15 @@ body.audio-on .audio-btn .cross { opacity: 0; }
 .overlay-close {
   position: absolute;
   right: 12px; top: 10px;
-  width: 32px; height: 32px;
-  background: none;
-  border: 1px solid var(--line);
-  color: var(--bone-mid);
+  width: 34px; height: 34px;
+  background: color-mix(in srgb, var(--accent, #fff) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent, #fff) 45%, transparent);
+  color: var(--bone);
   font-size: 18px;
   line-height: 1;
   cursor: pointer;
 }
-.overlay-close:hover { color: var(--bone); border-color: var(--bone-dim); }
+.overlay-close:hover { color: #000; background: var(--accent, var(--bone)); border-color: var(--accent, var(--bone)); }
 
 .overlay-panel-body {
   overflow-y: auto;

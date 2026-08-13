@@ -159,9 +159,9 @@ function resolveGuideArt(id, onReady) {
    at the same guide; clicking that guide (from anywhere — the floor, the
    phone cards, the nav, or the title menu, since they all funnel through
    overlayApi.open()) advances to the next one. Progress is kept in
-   sessionStorage so it doesn't repeat within a visit but does reset next
-   time. Clicking a guide that ISN'T the current target doesn't advance or
-   reset it — only the right one does. */
+   localStorage so it runs once for a new visitor and stays gone afterwards.
+   Clicking a guide that ISN'T the current target doesn't advance or reset it
+   — only the right one does. */
 
 const TUTORIAL = [
   { id: "cornerwoman", hint: "Start by selecting the Cornerwoman — she'll explain how this works." },
@@ -171,14 +171,35 @@ const TUTORIAL = [
   { id: "sleeper", hint: "Now visit the Sleeper — the Lab." },
 ];
 
+/* localStorage, not sessionStorage — the tutorial is a FIRST-VISIT thing, and
+   sessionStorage clears the moment the tab closes, so it replayed every visit.
+
+   What this can and can't know: localStorage is per browser, per device. The
+   same person on a phone and a laptop counts as two first visits, incognito
+   always looks new, and Safari evicts script-written storage after 7 days
+   without interaction. Knowing a *person* rather than a browser would need
+   accounts, which isn't worth it here — so the tutorial can occasionally
+   reappear for a returning visitor. That's why the hint carries a Skip
+   button: one click ends it permanently, which makes the imperfect detection
+   a non-issue. */
+
+const TUTORIAL_KEY = "longuard_tutorial_step";
+
 function tutorialStep() {
   let idx = 0;
-  try { idx = parseInt(sessionStorage.getItem("longuard_tutorial_step") || "0", 10); } catch (e) { /* private mode */ }
+  try { idx = parseInt(localStorage.getItem(TUTORIAL_KEY) || "0", 10); } catch (e) { /* private mode */ }
   return Number.isNaN(idx) ? 0 : idx;
 }
 
 function setTutorialStep(idx) {
-  try { sessionStorage.setItem("longuard_tutorial_step", String(idx)); } catch (e) { /* private mode */ }
+  try { localStorage.setItem(TUTORIAL_KEY, String(idx)); } catch (e) { /* private mode */ }
+}
+
+/* Skipping jumps past the end of the list, so renderTutorial() takes its
+   "no step left" branch and hides the hint for good. */
+function dismissTutorial() {
+  setTutorialStep(TUTORIAL.length);
+  renderTutorial();
 }
 
 function renderTutorial() {
@@ -196,7 +217,19 @@ function renderTutorial() {
   }
 
   hintEl.style.display = "";
-  hintEl.textContent = step.hint;
+  hintEl.innerHTML = `
+    <span class="gym-hint-step">${tutorialStep() + 1}<span>/${TUTORIAL.length}</span></span>
+    <span class="gym-hint-text"></span>
+    <button class="gym-hint-skip" type="button">Skip</button>`;
+  hintEl.querySelector(".gym-hint-text").textContent = step.hint;
+  hintEl.querySelector(".gym-hint-skip").addEventListener("click", (e) => {
+    e.stopPropagation();
+    dismissTutorial();
+  });
+  // Tint the bar with the accent of the guide it's pointing at, so the prompt
+  // and the glowing character read as the same instruction.
+  const g = GUIDES.find((x) => x.id === step.id);
+  if (g) hintEl.style.setProperty("--accent", g.accent);
   hintEl.classList.add("is-shimmer");
 
   const targetGuide = document.querySelector(`.guide[data-id="${step.id}"]`);
