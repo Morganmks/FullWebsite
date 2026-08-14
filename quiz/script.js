@@ -2,22 +2,24 @@
 // Flow: attract (press start) -> title menu -> chapter card -> brief
 //       -> 9 questions -> email gate -> fighter unlocked (full profile).
 //
-// Scoring is normalized per archetype: two questions only offer three answers,
-// so Sleeper has fewer chances to score than the other three. Comparing raw
-// totals would bias against it, so each archetype scores as a share of its own
-// maximum.
+// Scoring is normalized per archetype: not every fighter has an answer in every
+// question — Sleeper is absent from the snack and shirt-fit questions, and
+// Cornerwoman from the hand-wrap and shirt-fit ones — so they get fewer chances
+// to score. Comparing raw totals would bias against them, so each archetype
+// scores as a share of its own maximum.
 
 const MISSION_BRIEF = "You're in the middle of fight camp, training for your next big fight. It's another normal day of training.";
 
 const QUESTIONS = [
   {
     bridge: "Alarm goes off. Camp doesn't care how you slept.",
-    text: "It's training day. Who're you calling?",
+    text: "You're about to head to training. Who're you inviting?",
     options: [
       { label: "The whole group", type: "joker" },
       { label: "One training partner I trust", type: "stoic" },
       { label: "Nobody, don't need anyone to push myself", type: "slasher" },
       { label: "Just me, I prefer to train alone", type: "sleeper" },
+      { label: "Whoever wants to come, I'm going either way", type: "cornerwoman" },
     ],
   },
   {
@@ -27,6 +29,7 @@ const QUESTIONS = [
       { label: "Fruits & protein shake", type: "slasher" },
       { label: "Whatever I can find", type: "joker" },
       { label: "Nothing", type: "stoic" },
+      { label: "Yogurt and overnight oats", type: "cornerwoman" },
     ],
   },
   {
@@ -47,6 +50,7 @@ const QUESTIONS = [
       { label: "Gold", type: "joker" },
       { label: "White", type: "stoic" },
       { label: "Black", type: "sleeper" },
+      { label: "Blue", type: "cornerwoman" },
     ],
   },
   {
@@ -57,6 +61,7 @@ const QUESTIONS = [
       { label: "Classical", type: "stoic" },
       { label: "K-pop", type: "joker" },
       { label: "Silence, no music", type: "sleeper" },
+      { label: "Other", type: "cornerwoman" },
     ],
   },
   {
@@ -67,6 +72,7 @@ const QUESTIONS = [
       { label: "Take a step back to analyze what went wrong first", type: "stoic" },
       { label: "Get frustrated for a second, then move on to something else entirely", type: "joker" },
       { label: "Laugh it off, it wasn't that deep anyway", type: "sleeper" },
+      { label: "Say nothing, fix it quietly, and never bring it up again", type: "cornerwoman" },
     ],
   },
   {
@@ -87,16 +93,18 @@ const QUESTIONS = [
       { label: "Heavy hands, tank your opponent's shots", type: "stoic" },
       { label: "Kicks, the flashier the better", type: "joker" },
       { label: "Technical counter fighter, precise and accurate strikes with timing", type: "sleeper" },
+      { label: "Control their hands and find the timing for sharp elbows", type: "cornerwoman" },
     ],
   },
   {
     bridge: "Session's done. Tomorrow's open.",
     text: "How do you spend your rest days?",
     options: [
-      { label: "Light jog and stretching, ice bath & sauna", type: "stoic" },
+      { label: "Ice bath & sauna", type: "stoic" },
       { label: "\"What's a rest day?\"", type: "slasher" },
       { label: "Spend time with friends and family", type: "joker" },
       { label: "Sleep the whole day", type: "sleeper" },
+      { label: "Light jog and stretching", type: "cornerwoman" },
     ],
   },
 ];
@@ -187,7 +195,7 @@ const RESULTS = {
       { label: "Technique", value: 78 },
       { label: "Instinct", value: 55 },
     ],
-    radarNote: "The widest base of the four. Nothing spikes, nothing collapses — you just don't break.",
+    radarNote: "The widest base of the roster. Nothing spikes, nothing collapses — you just don't break.",
     spectra: [
       { left: "Instinct", right: "Calculation", value: 88 },
       { left: "Aggression", right: "Patience", value: 68 },
@@ -309,7 +317,7 @@ const RESULTS = {
       { label: "Instinct", value: 54 },
       { label: "Durability", value: 40 },
     ],
-    radarNote: "The most lopsided card of the four. Technique carries everything and the rest is thin — you don't survive a war, you make sure it never becomes one.",
+    radarNote: "The most lopsided card on the roster. Technique carries everything and the rest is thin — you don't survive a war, you make sure it never becomes one.",
     spectra: [
       { left: "Instinct", right: "Calculation", value: 74 },
       { left: "Aggression", right: "Patience", value: 88 },
@@ -350,9 +358,69 @@ const RESULTS = {
     },
     fit: "Standard athletic fit",
   },
+  cornerwoman: {
+    title: "The Cornerwoman",
+    style: "Muay Sok",
+    cls: "Support",
+    blurb: "Reads a room before she says anything, and needs nobody's permission for any of it. Cold to most people on purpose — the warmth is real, it's just reserved.",
+    accent: "#3FA88C",
+    tag: "I don't need saving.",
+    intro: [
+      "Thoughtful, quiet, and completely self-governing. She listens more than she talks, decides for herself, and has never once needed a man in the gym to tell her what she's capable of — she stopped hearing that particular voice a long time ago.",
+      "The distance most people feel from her isn't coldness, it's a filter. She's not managing an image, she's managing who gets access, and she's comfortable being misread by everyone who hasn't earned the other side of it.",
+      "The people who do get through find someone soft, funny and fiercely protective — a version of her almost nobody else has met, and one she'd never perform for a room.",
+    ],
+    attributes: [
+      { label: "Discipline", value: 88 },
+      { label: "Technique", value: 86 },
+      { label: "Instinct", value: 84 },
+      { label: "Pressure", value: 70 },
+      { label: "Durability", value: 52 },
+    ],
+    radarNote: "Three tall pillars and one deliberate gap. You settle things with reads and precision long before anything becomes a war of attrition.",
+    spectra: [
+      { left: "Instinct", right: "Calculation", value: 64 },
+      { left: "Aggression", right: "Patience", value: 76 },
+      { left: "Solitary", right: "Social", value: 28 },
+      { left: "Absorb", right: "Evade", value: 68 },
+      { left: "Routine", right: "Improvise", value: 40 },
+    ],
+    gym: [
+      "You train on your own schedule, to your own plan, and you're unbothered by whether anyone rates it. You've been the only woman on the mats often enough that it stopped registering as a thing.",
+      "You'll take coaching from someone who's actually watching you and ignore it entirely from someone who's performing. Most people can't tell which one they are; you can, within a round.",
+    ],
+    pressure: [
+      "You go still. Where other people speed up, you slow down and start reading — and by the time you commit, the decision was made three exchanges ago.",
+      "The elbow is the honest version of you: nothing telegraphed, nothing wasted, and the exchange is over before anyone realised it had started.",
+    ],
+    people: [
+      "Your circle is small on purpose and permanent by default. Getting in takes time and consistency, not charm — and charm is the fastest way to be moved further out.",
+      "The cost is that people decide who you are from the outside and are usually confident about it. You've stopped correcting them, which is efficient, and also how the misread hardens.",
+    ],
+    strengths: [
+      { title: "You actually listen", body: "Not waiting-to-speak listening — the kind where people hear their own thinking back, clearer. It's why the few who know you bring you the things they haven't told anyone else." },
+      { title: "Nobody's approval is load-bearing", body: "You built your standards yourself, so they can't be revoked by someone who doesn't rate you. Being underestimated costs you nothing because you were never spending their currency." },
+      { title: "You handle it", body: "Whatever it is. You don't outsource your problems or wait for someone to step in, and that self-sufficiency is completely genuine — it just isn't the whole story." },
+    ],
+    weaknesses: [
+      { title: "The filter runs on people who'd have passed", body: "It's calibrated for the ones who look down on you, and it catches good people too. You'll never know which ones, because they don't announce themselves on the way out." },
+      { title: "Independence became identity", body: "Not needing anyone started as protection and turned into something you'd defend on principle. There's a difference between not needing help and not being able to accept it, and from the inside they feel identical." },
+      { title: "You let the misread stand", body: "Correcting people feels like asking to be understood, which feels like needing something. So you let them be wrong about you — for years — and then quietly resent that nobody knows you." },
+    ],
+    work: [
+      "Say the warm thing out loud once, to someone who's already in. Not a gesture — the sentence. You do the caring quietly and assume it registers; often it doesn't.",
+      "Notice when you're filtering for real disrespect versus filtering for anyone who got close too fast. The second one is fear wearing the first one's clothes.",
+      "Accept one piece of help this month without immediately balancing the ledger. Let it sit unreturned. That discomfort is the whole exercise.",
+    ],
+    matchups: {
+      pairs: { type: "sleeper", note: "Neither of you mistakes the other's quiet for coldness, and neither needs filling. You give trust on the same slow schedule, so for once nobody's early." },
+      clashes: { type: "slasher", note: "He solves everything by pushing harder and will tell you what you can handle. That is the precise thing you stopped listening to, and he'll read your silence as agreement." },
+    },
+    fit: "True compression, cut to show the figure",
+  },
 };
 
-const PRIORITY = ["slasher", "stoic", "joker", "sleeper"]; // also the tie-break order
+const PRIORITY = ["slasher", "stoic", "joker", "sleeper", "cornerwoman"]; // also the tie-break order
 
 const MAX_SCORES = PRIORITY.reduce((acc, type) => {
   acc[type] = QUESTIONS.filter((q) => q.options.some((o) => o.type === type)).length;
@@ -373,7 +441,7 @@ const TIMING = {
 
 // ===== State =====
 let currentQuestion = 0;
-const scores = { slasher: 0, stoic: 0, joker: 0, sleeper: 0 };
+const scores = { slasher: 0, stoic: 0, joker: 0, sleeper: 0, cornerwoman: 0 };
 const rawAnswers = [];
 let fitPreference = null;
 let finalArchetype = null;
@@ -798,7 +866,13 @@ function openRosterCard(type) {
   const art = el("div", "panel-art");
   const img = document.createElement("img");
   img.alt = `${r.title} illustration`;
-  resolveImage(`../assets/fighters/${type}`, (url) => { img.src = url; });
+  // Same fallback the roster cards get — without it a missing file renders as a
+  // broken-image icon with the alt text showing through.
+  resolveImage(
+    `../assets/fighters/${type}`,
+    (url) => { img.src = url; art.classList.remove("placeholder"); },
+    () => art.classList.add("placeholder"),
+  );
   art.appendChild(img);
 
   const name = el("h3", "panel-name", r.title);
@@ -1032,10 +1106,16 @@ async function transitionToNextQuestion() {
 }
 
 function calculateResult() {
-  let best = PRIORITY[0];
+  // An archetype with no answers pointing at it yet (a new fighter added before
+  // the questions catch up) has a ceiling of zero. Dividing by that gives NaN,
+  // which silently loses every comparison — so skip them explicitly instead.
+  const eligible = PRIORITY.filter((type) => MAX_SCORES[type] > 0);
+  if (!eligible.length) return PRIORITY[0];
+
+  let best = eligible[0];
   let bestShare = scores[best] / MAX_SCORES[best];
 
-  PRIORITY.forEach((type) => {
+  eligible.forEach((type) => {
     const share = scores[type] / MAX_SCORES[type];
     if (share > bestShare + 1e-9) {
       best = type;
@@ -1154,7 +1234,7 @@ async function revealResult(submission) {
   unlockRoster(r);
 }
 
-// Four sealed cards centre stage. A cursor runs across them, slowing as it goes,
+// Every sealed card centre stage. A cursor runs across them, slowing as it goes,
 // lands on yours, opens it, then the card itself flies to where the profile
 // portrait will be — so the two screens share one continuous object.
 function runCardReveal(r, submission) {

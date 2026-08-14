@@ -19,6 +19,7 @@
   --joker: #D4AF37;
   --sleeper: #4A90D9;
   --sleeper-text: #8FC0F0;
+  --cornerwoman: #3FA88C;
 
   --accent: var(--slasher);
   --accent-text: #000;
@@ -650,6 +651,7 @@ body.audio-on .audio-btn .cross { opacity: 0; }
 .option-btn:nth-child(2) { animation-delay: 0.13s; }
 .option-btn:nth-child(3) { animation-delay: 0.20s; }
 .option-btn:nth-child(4) { animation-delay: 0.27s; }
+.option-btn:nth-child(5) { animation-delay: 0.34s; }
 @keyframes optionIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
 .option-btn .cursor-mark {
@@ -751,6 +753,8 @@ body.audio-on .audio-btn .cross { opacity: 0; }
 
 .roster-view { display: grid; gap: 18px; margin-bottom: 26px; }
 .roster { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+/* odd count on a two-up grid leaves a widow — centre it instead of stranding it left */
+.roster .record:last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 6px); }
 
 /* records are buttons now, so they need the button reset */
 .record {
@@ -785,6 +789,7 @@ body.audio-on .audio-btn .cross { opacity: 0; }
 .roster-panel[data-archetype="stoic"]   { --card: var(--stoic); }
 .roster-panel[data-archetype="joker"]   { --card: var(--joker); }
 .roster-panel[data-archetype="sleeper"] { --card: var(--sleeper); }
+.roster-panel[data-archetype="cornerwoman"] { --card: var(--cornerwoman); }
 
 .panel-art {
   width: 100%;
@@ -795,6 +800,20 @@ body.audio-on .audio-btn .cross { opacity: 0; }
   margin-bottom: 14px;
 }
 .panel-art img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+.panel-art.placeholder { background: repeating-linear-gradient(135deg, #08080A 0 5px, #101013 5px 10px); position: relative; }
+.panel-art.placeholder img { display: none; }
+.panel-art.placeholder::before {
+  content: "?";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ui);
+  font-weight: 800;
+  font-size: 30px;
+  color: var(--bone-dim);
+}
 
 .panel-name {
   font-family: var(--ui);
@@ -975,10 +994,11 @@ body.audio-on .audio-btn .cross { opacity: 0; }
 .rcard[data-archetype="stoic"]   { --card: var(--stoic); }
 .rcard[data-archetype="joker"]   { --card: var(--joker); }
 .rcard[data-archetype="sleeper"] { --card: var(--sleeper); }
+.rcard[data-archetype="cornerwoman"] { --card: var(--cornerwoman); }
 
 .rcard {
   position: relative;
-  width: clamp(64px, 19vw, 132px);
+  width: clamp(52px, 15.5vw, 124px);
   aspect-ratio: 3 / 4;
   flex: 0 0 auto;
   background: repeating-linear-gradient(135deg, #08080A 0 5px, #101013 5px 10px);
@@ -1245,6 +1265,7 @@ body.result-slasher { --accent: var(--slasher); --accent-text: #000; }
 body.result-stoic   { --accent: var(--stoic);   --accent-text: var(--stoic-text); }
 body.result-joker   { --accent: var(--joker);   --accent-text: #000; }
 body.result-sleeper { --accent: var(--sleeper); --accent-text: #000; }
+body.result-cornerwoman { --accent: var(--cornerwoman); --accent-text: #000; }
 
 /* ==========================================================================
    Desktop
@@ -1263,7 +1284,8 @@ body.result-sleeper { --accent: var(--sleeper); --accent-text: #000; }
       radial-gradient(120% 90% at 50% 50%, transparent 34%, rgba(0, 0, 0, 0.7) 100%);
   }
 
-  .roster { grid-template-columns: repeat(4, 1fr); }
+  .roster { grid-template-columns: repeat(5, 1fr); }
+  .roster .record:last-child:nth-child(odd) { grid-column: auto; justify-self: stretch; width: 100%; }
   /* the panel opens to the right of the cards once there's room for it */
   .roster-view { grid-template-columns: minmax(0, 1fr) 0fr; gap: 0; transition: grid-template-columns 0.5s var(--ease), gap 0.5s var(--ease); }
   .roster-view:has(.roster-panel.open) { grid-template-columns: minmax(0, 1fr) 260px; gap: 22px; }

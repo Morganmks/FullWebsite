@@ -18,6 +18,7 @@ const ARCHETYPE_GROUP_ENV = {
   "The Stoic": "MAILERLITE_GROUP_STOIC",
   "The Joker": "MAILERLITE_GROUP_JOKER",
   "The Sleeper": "MAILERLITE_GROUP_SLEEPER",
+  "The Cornerwoman": "MAILERLITE_GROUP_CORNERWOMAN",
 };
 
 export default async function handler(req, res) {
