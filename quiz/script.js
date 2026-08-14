@@ -1569,29 +1569,61 @@ const WEBMAIL = {
   "protonmail.com": "https://mail.proton.me/",
   "pm.me": "https://mail.proton.me/",
   "gmx.com": "https://www.gmx.com/",
+  "gmx.de": "https://www.gmx.net/",
+  "web.de": "https://web.de/",
+  "t-online.de": "https://www.t-online.de/email/",
   "zoho.com": "https://mail.zoho.com/",
+  "fastmail.com": "https://app.fastmail.com/",
+  "hey.com": "https://app.hey.com/",
+  "tuta.com": "https://app.tuta.com/",
+  "tutanota.com": "https://app.tuta.com/",
+  "mail.com": "https://www.mail.com/",
   "yandex.com": "https://mail.yandex.com/",
+  "yandex.ru": "https://mail.yandex.ru/",
+  "mail.ru": "https://e.mail.ru/",
   "qq.com": "https://mail.qq.com/",
   "foxmail.com": "https://mail.qq.com/",
   "163.com": "https://mail.163.com/",
   "126.com": "https://mail.126.com/",
+  "sina.com": "https://mail.sina.com.cn/",
+  "sohu.com": "https://mail.sohu.com/",
+  "aliyun.com": "https://mail.aliyun.com/",
+  "naver.com": "https://mail.naver.com/",
+  "daum.net": "https://mail.daum.net/",
+  "hanmail.net": "https://mail.daum.net/",
 };
+
+// Regional spellings of the big providers — yahoo.co.uk, hotmail.fr, live.com.au
+// and so on all land in the same webmail as their .com parent.
+const WEBMAIL_FAMILIES = [
+  [/^yahoo\./, "https://mail.yahoo.com/"],
+  [/^(hotmail|outlook|live|msn)\./, "https://outlook.live.com/mail/0/"],
+  [/^gmail\./, "https://mail.google.com/mail/u/0/"],
+];
+
+function webmailFor(domain) {
+  if (!domain) return null;
+  if (WEBMAIL[domain]) return WEBMAIL[domain];
+  const family = WEBMAIL_FAMILIES.find(([pattern]) => pattern.test(domain));
+  return family ? family[1] : null;
+}
 
 document.getElementById("inbox-btn").addEventListener("click", (e) => {
   e.stopPropagation();
   sfx.menu();
-  const btn = document.getElementById("inbox-btn");
-  const domain = submittedEmail.split("@")[1]?.toLowerCase();
-  const url = domain && WEBMAIL[domain];
+  const url = webmailFor(submittedEmail.split("@")[1]?.toLowerCase());
 
   if (url) {
     window.open(url, "_blank", "noopener");
     return;
   }
 
-  const original = btn.textContent;
-  btn.textContent = submittedEmail ? `Check ${submittedEmail}` : "Check your inbox";
-  setTimeout(() => { btn.textContent = original; }, 2600);
+  // A work address or a host we don't know — there's no way to guess their
+  // webmail, and a wrong tab is worse than none. mailto: is the one thing every
+  // device answers: it hands off to whatever mail app they actually use. It
+  // opens on a blank compose rather than the inbox, which is the trade for
+  // having it work everywhere.
+  window.location.href = "mailto:";
 });
 
 // ===== Retake =====
