@@ -1253,7 +1253,8 @@ body.audio-on .audio-btn .cross { opacity: 0; }
 }
 .matchup p { font-size: 14px; line-height: 1.6; color: var(--bone-soft); }
 
-.result-actions { display: flex; flex-direction: column; padding-bottom: 28px; }
+.result-actions { display: flex; flex-direction: column; padding-bottom: 14px; }
+.inbox-note { padding-bottom: 32px; max-width: 46ch; }
 
 .result-body .reveal-item { opacity: 0; }
 .result-body.revealed .reveal-item { animation: statIn 0.5s var(--ease) both; }

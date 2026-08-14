@@ -68,15 +68,15 @@ const QUESTIONS = [
     bridge: "Halfway through, it happens.",
     text: "When a setback happens, you:",
     options: [
-      { label: "Get back up immediately and keep going, no time to dwell on it", type: "slasher" },
-      { label: "Take a step back to analyze what went wrong first", type: "stoic" },
-      { label: "Get frustrated for a second, then move on to something else entirely", type: "joker" },
-      { label: "Laugh it off, it wasn't that deep anyway", type: "sleeper" },
-      { label: "Say nothing, fix it quietly, and never bring it up again", type: "cornerwoman" },
+      { label: "Keep pushing until I get through it", type: "slasher" },
+      { label: "Take a step back to analyze what went wrong and how I can improve", type: "stoic" },
+      { label: "Get angry for a second, then move on to something else entirely", type: "joker" },
+      { label: "Pretend it's not a big deal and sweep it under the rug", type: "sleeper" },
+      { label: "Give yourself time to recover and reflect on what went wrong", type: "cornerwoman" },
     ],
   },
   {
-    bridge: "You peel your shirt off. Soaked through.",
+    bridge: "You need training gear that won't break before you do",
     text: "How do you like your training shirts to fit?",
     isDataQuestion: true, // also saved as its own raw field: fit_preference
     options: [
@@ -97,7 +97,7 @@ const QUESTIONS = [
     ],
   },
   {
-    bridge: "Session's done. Tomorrow's open.",
+    bridge: "Training's done and you have the day off tomorrow.",
     text: "How do you spend your rest days?",
     options: [
       { label: "Ice bath & sauna", type: "stoic" },
@@ -120,7 +120,7 @@ const RESULTS = {
     title: "The Slasher",
     style: "Muay Khao",
     cls: "Warrior",
-    blurb: "Comes forward and does not stop. Wins by outlasting rather than out-thinking, and genuinely cannot tell the difference between resting and quitting.",
+    blurb: "Comes forward and does not stop, no matter how hard they get hit. Wins by outlasting rather than out-thinking, and genuinely cannot tell the difference between resting and quitting.",
     accent: "#C1272D",
     tag: "Let the results speak.",
     intro: [
@@ -180,7 +180,7 @@ const RESULTS = {
     title: "The Stoic",
     style: "Muay Mat",
     cls: "Tank",
-    blurb: "Takes the shot and keeps walking. Decides once, never revisits it, and carries whatever it costs without ever mentioning it.",
+    blurb: "Takes the shot and keeps analyzing their opponent. Decides once, never revisits it, and carries whatever it costs without ever mentioning it.",
     accent: "#FFFFFF",
     tag: "Nothing gets through.",
     intro: [
@@ -212,13 +212,12 @@ const RESULTS = {
       "The catch is that you ran them alone, and you'll carry the outcome alone too, whichever way it goes.",
     ],
     people: [
-      "You're the one people bring their problems to. It's rare that anyone brings you theirs and then asks about yours.",
-      "Partly that's them. Mostly it's that you've made it very hard to — every time someone gets close to the question, you have a better one about them.",
+      "You have a small circle of high value people, and you don't let anyone in who doesn't earn it. You surround yourself with people who genuinely care about you and your goals, and you do the same for them.",
     ],
     strengths: [
-      { title: "When you speak, it lands", body: "You don't spend words, so they carry weight nobody else's do. A single sentence from you resets a room that's been arguing for twenty minutes." },
-      { title: "You make hard calls without flinching", body: "Not because you're cold — because you did the thinking in advance. By the time it's difficult, you've already been living with the answer." },
-      { title: "You don't second-guess", body: "Once it's made, it's made, and you move. Most people burn enormous energy relitigating decisions. You've never paid that tax." },
+      { title: "When you speak, people lean in closer", body: "You don't waste words, so they carry weight nobody else's do. A single sentence from you resets a room that's been arguing for twenty minutes." },
+      { title: "You make hard calls without flinching", body: "Not because you're cold but because you analyzed the situation in advance. By the time it's difficult, you've already been living with the answer." },
+      { title: "You don't second-guess", body: "Once it's made, it's done and you move on. Most people burn enormous energy relitigating decisions so when tough calls need to be made people come to you." },
     ],
     weaknesses: [
       { title: "Nothing actually gets processed", body: "You're managing feeling, not resolving it — and managed feeling doesn't expire. It sits there accruing, and it comes out sideways, usually months later, usually at someone who didn't earn it." },
@@ -362,13 +361,13 @@ const RESULTS = {
     title: "The Cornerwoman",
     style: "Muay Sok",
     cls: "Support",
-    blurb: "Reads a room before she says anything, and needs nobody's permission for any of it. Cold to most people on purpose — the warmth is real, it's just reserved.",
+    blurb: "Reads a room before she says anything, and doesn't need anyone's permission to take action. Cold to most people but warm to the ones who earn it, and she has a very specific list of who that is.",
     accent: "#3FA88C",
     tag: "I don't need saving.",
     intro: [
-      "Thoughtful, quiet, and completely self-governing. She listens more than she talks, decides for herself, and has never once needed a man in the gym to tell her what she's capable of — she stopped hearing that particular voice a long time ago.",
+      "Thoughtful, quiet, and completely self-governing. She listens more than she talks, decides for herself, and has never once needed a man in the gym to tell her what she's capable of.",
       "The distance most people feel from her isn't coldness, it's a filter. She's not managing an image, she's managing who gets access, and she's comfortable being misread by everyone who hasn't earned the other side of it.",
-      "The people who do get through find someone soft, funny and fiercely protective — a version of her almost nobody else has met, and one she'd never perform for a room.",
+      "The people who do get through find her to be caring, funny and fiercely protective. A version of her almost nobody else has met, and one she'd never let anyone undeserving see.",
     ],
     attributes: [
       { label: "Discipline", value: 88 },
@@ -390,8 +389,8 @@ const RESULTS = {
       "You'll take coaching from someone who's actually watching you and ignore it entirely from someone who's performing. Most people can't tell which one they are; you can, within a round.",
     ],
     pressure: [
-      "You go still. Where other people speed up, you slow down and start reading — and by the time you commit, the decision was made three exchanges ago.",
-      "The elbow is the honest version of you: nothing telegraphed, nothing wasted, and the exchange is over before anyone realised it had started.",
+      "You go still. Where other people speed up, you slow down and start reading the room. You don't need to be the first to act, and you don't need to be the loudest — you just need make the right move",
+      "The elbow is the honest version of you: nothing telegraphed, zero movements wasted, and the exchange is over before anyone realised it had started.",
     ],
     people: [
       "Your circle is small on purpose and permanent by default. Getting in takes time and consistency, not charm — and charm is the fastest way to be moved further out.",
@@ -445,6 +444,7 @@ const scores = { slasher: 0, stoic: 0, joker: 0, sleeper: 0, cornerwoman: 0 };
 const rawAnswers = [];
 let fitPreference = null;
 let finalArchetype = null;
+let submittedEmail = "";
 let chapterTimer = null;
 let typeTimer = null;
 let scanTimer = null;
@@ -1166,6 +1166,7 @@ document.getElementById("email-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const name = document.getElementById("name-input").value.trim();
   const email = document.getElementById("email-input").value;
+  submittedEmail = email.trim();
   const submitBtn = e.target.querySelector("button");
   submitBtn.disabled = true;
   submitBtn.textContent = "Unlocking...";
@@ -1547,31 +1548,50 @@ function resetRoster() {
 
 // ===== Share =====
 
-document.getElementById("share-btn").addEventListener("click", async (e) => {
+// Webmail inboxes for the providers people actually sign up with. A mailto:
+// link would open a compose window, which is the opposite of what's wanted —
+// these go to the inbox itself. Anything unrecognised (work domains, small
+// hosts) gets the address shown on the button instead of a wrong tab.
+const WEBMAIL = {
+  "gmail.com": "https://mail.google.com/mail/u/0/",
+  "googlemail.com": "https://mail.google.com/mail/u/0/",
+  "outlook.com": "https://outlook.live.com/mail/0/",
+  "hotmail.com": "https://outlook.live.com/mail/0/",
+  "live.com": "https://outlook.live.com/mail/0/",
+  "msn.com": "https://outlook.live.com/mail/0/",
+  "yahoo.com": "https://mail.yahoo.com/",
+  "ymail.com": "https://mail.yahoo.com/",
+  "aol.com": "https://mail.aol.com/",
+  "icloud.com": "https://www.icloud.com/mail",
+  "me.com": "https://www.icloud.com/mail",
+  "mac.com": "https://www.icloud.com/mail",
+  "proton.me": "https://mail.proton.me/",
+  "protonmail.com": "https://mail.proton.me/",
+  "pm.me": "https://mail.proton.me/",
+  "gmx.com": "https://www.gmx.com/",
+  "zoho.com": "https://mail.zoho.com/",
+  "yandex.com": "https://mail.yandex.com/",
+  "qq.com": "https://mail.qq.com/",
+  "foxmail.com": "https://mail.qq.com/",
+  "163.com": "https://mail.163.com/",
+  "126.com": "https://mail.126.com/",
+};
+
+document.getElementById("inbox-btn").addEventListener("click", (e) => {
   e.stopPropagation();
   sfx.menu();
-  const r = RESULTS[finalArchetype];
-  const shareText = `I'm ${r.title} — ${r.cls}. What's your fighter type? Take the Longuard quiz:`;
-  const shareUrl = window.location.href;
-  const btn = document.getElementById("share-btn");
+  const btn = document.getElementById("inbox-btn");
+  const domain = submittedEmail.split("@")[1]?.toLowerCase();
+  const url = domain && WEBMAIL[domain];
 
-  if (navigator.share) {
-    try {
-      await navigator.share({ title: "What Kind of Fighter Are You?", text: shareText, url: shareUrl });
-      return;
-    } catch (err) {
-      if (err.name === "AbortError") return; // sheet dismissed, not a failure
-    }
+  if (url) {
+    window.open(url, "_blank", "noopener");
+    return;
   }
 
-  try {
-    await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
-    const original = btn.textContent;
-    btn.textContent = "Copied to clipboard";
-    setTimeout(() => { btn.textContent = original; }, 2000);
-  } catch (err) {
-    console.error("Clipboard error:", err);
-  }
+  const original = btn.textContent;
+  btn.textContent = submittedEmail ? `Check ${submittedEmail}` : "Check your inbox";
+  setTimeout(() => { btn.textContent = original; }, 2600);
 });
 
 // ===== Retake =====
@@ -1590,3 +1610,50 @@ document.getElementById("retake-btn").addEventListener("click", (e) => {
 // ===== Boot =====
 
 showScreen("attract", { animateOut: false });
+
+// ===== Preview mode =====
+// Jump straight to any screen without playing the nine questions or handing
+// over an email — for checking layout and copy while building.
+//
+//   ?preview=cornerwoman            a finished profile, fully populated
+//   ?preview=stoic&screen=reveal    the card-reveal screen for that fighter
+//   ?screen=roster                  any screen on its own: title, roster,
+//                                   briefing, brief, quiz, gate, reveal
+//
+// The key is a speed bump, not security — anyone can read it in this file. It
+// only stops the profiles being a casually shareable way around the email gate.
+// Nothing here runs without a ?preview= or ?screen= in the URL.
+const PREVIEW_KEY = "sok";
+
+(function initPreview() {
+  const params = new URLSearchParams(window.location.search);
+  const fighter = params.get("preview");
+  const screen = params.get("screen") || (fighter ? "result" : null);
+  if (!fighter && !screen) return;
+  if (params.get("key") !== PREVIEW_KEY) return;
+  if (!screens[screen]) return;
+
+  const type = RESULTS[fighter] ? fighter : PRIORITY[0];
+  finalArchetype = type;
+  const r = RESULTS[type];
+
+  if (screen === "result") {
+    populateResult(r);
+    document.body.classList.add(`result-${type}`);
+    const record = document.getElementById("result-record");
+    record.classList.remove("locked");
+    record.classList.add("unlocked");
+    document.getElementById("result-body").classList.add("revealed");
+    unlockRoster(r);
+    // the stat chart and sliders animate on a delay in the real flow, so give
+    // them the same nudge here or the profile renders with empty graphics
+    setTimeout(() => {
+      document.querySelector(".radar-shape")?.classList.add("drawn");
+      document.querySelectorAll(".spectrum-dot").forEach((dot, i) => {
+        setTimeout(() => { dot.style.left = `${dot.dataset.value}%`; }, i * 110);
+      });
+    }, 500);
+  }
+
+  showScreen(screen, { animateOut: false });
+})();
